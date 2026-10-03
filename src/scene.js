@@ -48,3 +48,24 @@ export const SUMMARY = {
 
 export const EMAIL = 'lbdelilla@gmail.com'
 export const LINKEDIN = 'https://www.linkedin.com/in/luciabelen/'
+
+// What changes for each kind of visitor: the order of the blocks inside an hour,
+// whether flashbacks start open, and the closing card of the day.
+export const ROUTES = {
+  r: { order: ['forYou', 'choice', 'team', 'flash'], flashOpen: false, summaryFirst: true, actions: ['cv', 'mail', 'linkedin'] },
+  c: { order: ['choice', 'forYou', 'team', 'flash'], flashOpen: false, summaryFirst: false, actions: ['mail', 'linkedin', 'cv'] },
+  q: { order: ['flash', 'forYou', 'choice', 'team'], flashOpen: true, summaryFirst: false, actions: ['linkedin', 'mail', 'cv'] },
+}
+
+export const CLOSING = {
+  es: {
+    r: 'Dos minutos y ya sabes cómo trabajo. Llévate mi CV.',
+    c: '¿Comparamos procesos? Escríbeme y cuéntame el tuyo.',
+    q: 'Gracias por pasar el día conmigo. Sigamos en contacto.',
+  },
+  en: {
+    r: 'Two minutes and you know how I work. Take my CV with you.',
+    c: 'Shall we compare processes? Write to me and tell me about yours.',
+    q: "Thanks for spending the day with me. Let's stay in touch.",
+  },
+}

@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { CONTENT } from './content.js'
 import { NOW_COPY, PING_COPY, PINGS, valenciaNow } from './pings.js'
-import { AVATARS, EMAIL, HOURS, INTRO_AVATAR, LINKEDIN, SUMMARY } from './scene.js'
+import { AVATARS, CLOSING, EMAIL, HOURS, INTRO_AVATAR, LINKEDIN, ROUTES, SUMMARY } from './scene.js'
 import { CV, TESTIMONIALS } from './testimonials.js'
 
 gsap.registerPlugin(useGSAP)
@@ -139,13 +139,95 @@ function Testimonials({ lang }) {
   )
 }
 
+function Actions({ lang, order, mailLabel }) {
+  const links = {
+    mail: { href: `mailto:${EMAIL}`, label: mailLabel },
+    linkedin: { href: LINKEDIN, label: 'LinkedIn', external: true },
+    cv: { href: CV[lang].file, label: CV[lang].label, download: true },
+  }
+  return (
+    <div className="contact">
+      {order.map((id, k) => {
+        const link = links[id]
+        return (
+          <a
+            key={id}
+            className={k === 0 ? 'cta' : 'cta cta-plain'}
+            href={link.href}
+            download={link.download}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noreferrer' : undefined}
+          >
+            {link.label}
+          </a>
+        )
+      })}
+    </div>
+  )
+}
+
 function Day({ copy, lang, persona, index, setIndex, score }) {
+  const route = ROUTES[persona]
   const [picks, setPicks] = useState({})
   const [flashes, setFlashes] = useState({})
   const chapter = copy.ch[index]
   const pick = picks[index]
-  const flashOpen = Boolean(flashes[index])
+  const flashOpen = flashes[index] ?? route.flashOpen
   const isLast = index === HOURS.length - 1
+
+  const blocks = {
+    forYou: (
+      <div key="forYou" className="for-you">
+        <span className="for-you-dot" />
+        <span>
+          <strong>{copy.forYou[persona]}</strong> {chapter.extra[persona]}
+        </span>
+      </div>
+    ),
+    choice: chapter.options && (
+      <div key="choice" className="choice">
+        <p className="question">{chapter.question}</p>
+        <div className="options">
+          {chapter.options.map((label, k) => (
+            <button
+              key={label}
+              type="button"
+              className={pick === k ? 'option is-picked' : 'option'}
+              aria-pressed={pick === k}
+              onClick={() => setPicks({ ...picks, [index]: k })}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        {pick !== undefined && (
+          <div className="reveal" aria-live="polite">
+            <strong>{chapter.feedback[pick]}</strong>
+            <span>{chapter.reveal}</span>
+          </div>
+        )}
+      </div>
+    ),
+    team: HOURS[index].team && <Testimonials key="team" lang={lang} />,
+    flash: chapter.flash && (
+      <div key="flash" className="flashback">
+        <button
+          type="button"
+          className="flash-toggle"
+          aria-expanded={flashOpen}
+          onClick={() => setFlashes({ ...flashes, [index]: !flashOpen })}
+        >
+          {flashOpen ? copy.t.flashClose : copy.t.flashOpen}
+        </button>
+        {flashOpen && (
+          <div className="flash-card">
+            <strong>{chapter.flashWhen}</strong>
+            <span>{chapter.flash}</span>
+          </div>
+        )}
+      </div>
+    ),
+  }
 
   return (
     <div className="panel">
@@ -166,72 +248,13 @@ function Day({ copy, lang, persona, index, setIndex, score }) {
       <h2>{chapter.title}</h2>
       <p className="lead">{chapter.body}</p>
 
-      <div className="for-you">
-        <span className="for-you-dot" />
-        <span>
-          <strong>{copy.forYou[persona]}</strong> {chapter.extra[persona]}
-        </span>
-      </div>
-
-      {chapter.options && (
-        <div className="choice">
-          <p className="question">{chapter.question}</p>
-          <div className="options">
-            {chapter.options.map((label, k) => (
-              <button
-                key={label}
-                type="button"
-                className={pick === k ? 'option is-picked' : 'option'}
-                aria-pressed={pick === k}
-                onClick={() => setPicks({ ...picks, [index]: k })}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          {pick !== undefined && (
-            <div className="reveal" aria-live="polite">
-              <strong>{chapter.feedback[pick]}</strong>
-              <span>{chapter.reveal}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {HOURS[index].team && <Testimonials lang={lang} />}
-
-      {chapter.flash && (
-        <div className="flashback">
-          <button
-            type="button"
-            className="flash-toggle"
-            aria-expanded={flashOpen}
-            onClick={() => setFlashes({ ...flashes, [index]: !flashOpen })}
-          >
-            {flashOpen ? copy.t.flashClose : copy.t.flashOpen}
-          </button>
-          {flashOpen && (
-            <div className="flash-card">
-              <strong>{chapter.flashWhen}</strong>
-              <span>{chapter.flash}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {isLast && score && <p className="score">{score}</p>}
+      {route.order.map((id) => blocks[id])}
 
       {isLast && (
-        <div className="contact">
-          <a className="cta" href={`mailto:${EMAIL}`}>
-            {copy.t.mail}
-          </a>
-          <a className="cta cta-plain" href={LINKEDIN} target="_blank" rel="noreferrer">
-            LinkedIn
-          </a>
-          <a className="cta cta-plain" href={CV[lang].file} download>
-            {CV[lang].label}
-          </a>
+        <div className="closing">
+          <p className="closing-title">{CLOSING[lang][persona]}</p>
+          {score && <p className="closing-score">{score}</p>}
+          <Actions lang={lang} order={route.actions} mailLabel={copy.t.mail} />
         </div>
       )}
 
@@ -304,11 +327,14 @@ function Summary({ lang, onClose }) {
 
   useEffect(() => {
     dialog.current.showModal()
+    // Start at the top: showModal focuses the first link, which sits at the bottom on phones
+    dialog.current.querySelector('h2').focus()
+    dialog.current.scrollTop = 0
   }, [])
 
   return (
     <dialog className="summary" ref={dialog} onClose={onClose} aria-labelledby="summary-title">
-      <h2 id="summary-title">{s.title}</h2>
+      <h2 id="summary-title" tabIndex={-1}>{s.title}</h2>
       <p className="summary-role">{s.role}</p>
       <ul>
         {s.points.map((point) => (
@@ -377,6 +403,7 @@ export default function App() {
   const start = (id) => {
     setIndex(startIndex)
     setPersona(id)
+    if (ROUTES[id].summaryFirst) setSummaryOpen(true)
   }
 
   const ping = PINGS[lang][index]
