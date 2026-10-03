@@ -3,7 +3,18 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { CONTENT } from './content.js'
 import { NOW_COPY, PING_COPY, PINGS, valenciaNow } from './pings.js'
-import { AVATARS, CLOSING, EMAIL, HOURS, INTRO_AVATAR, LINKEDIN, ROUTES, SUMMARY } from './scene.js'
+import {
+  AVATARS,
+  CLOSING,
+  CONTACT,
+  EMAIL,
+  FORMSPREE_ID,
+  HOURS,
+  INTRO_AVATAR,
+  LINKEDIN,
+  ROUTES,
+  SUMMARY,
+} from './scene.js'
 import { CV, TESTIMONIALS } from './testimonials.js'
 
 gsap.registerPlugin(useGSAP)
@@ -139,15 +150,31 @@ function Testimonials({ lang }) {
   )
 }
 
-function Actions({ lang, order, mailLabel }) {
+function MailAction({ label, primary, onContact }) {
+  const className = primary ? 'cta' : 'cta cta-plain'
+  if (FORMSPREE_ID) {
+    return (
+      <button type="button" className={className} onClick={onContact}>
+        {label}
+      </button>
+    )
+  }
+  return (
+    <a className={className} href={`mailto:${EMAIL}`}>
+      {label}
+    </a>
+  )
+}
+
+function Actions({ lang, order, mailLabel, onContact }) {
   const links = {
-    mail: { href: `mailto:${EMAIL}`, label: mailLabel },
     linkedin: { href: LINKEDIN, label: 'LinkedIn', external: true },
     cv: { href: CV[lang].file, label: CV[lang].label, download: true },
   }
   return (
     <div className="contact">
       {order.map((id, k) => {
+        if (id === 'mail') return <MailAction key={id} label={mailLabel} primary={k === 0} onContact={onContact} />
         const link = links[id]
         return (
           <a
@@ -166,7 +193,7 @@ function Actions({ lang, order, mailLabel }) {
   )
 }
 
-function Day({ copy, lang, persona, index, setIndex, score }) {
+function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
   const route = ROUTES[persona]
   const [picks, setPicks] = useState({})
   const [flashes, setFlashes] = useState({})
@@ -254,7 +281,7 @@ function Day({ copy, lang, persona, index, setIndex, score }) {
         <div className="closing">
           <p className="closing-title">{CLOSING[lang][persona]}</p>
           {score && <p className="closing-score">{score}</p>}
-          <Actions lang={lang} order={route.actions} mailLabel={copy.t.mail} />
+          <Actions lang={lang} order={route.actions} mailLabel={copy.t.mail} onContact={onContact} />
         </div>
       )}
 
@@ -321,7 +348,73 @@ function Ping({ lang, ping, answer, onAnswer }) {
   )
 }
 
-function Summary({ lang, onClose }) {
+function ContactForm({ lang, onClose }) {
+  const c = CONTACT[lang]
+  const dialog = useRef(null)
+  const [status, setStatus] = useState('idle')
+
+  useEffect(() => {
+    dialog.current.showModal()
+  }, [])
+
+  const submit = async (event) => {
+    event.preventDefault()
+    const data = new FormData(event.target)
+    setStatus('sending')
+    try {
+      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+      })
+      setStatus(response.ok ? 'sent' : 'error')
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  return (
+    <dialog className="summary" ref={dialog} onClose={onClose} aria-labelledby="contact-title">
+      <h2 id="contact-title">{c.title}</h2>
+      {status === 'sent' ? (
+        <p className="form-status" role="status">
+          {c.sent}
+        </p>
+      ) : (
+        <form className="form" onSubmit={submit}>
+          <p className="form-intro">{c.intro}</p>
+          <label>
+            {c.name}
+            <input type="text" name="name" autoComplete="name" required />
+          </label>
+          <label>
+            {c.email}
+            <input type="email" name="email" autoComplete="email" required />
+          </label>
+          <label>
+            {c.message}
+            <textarea name="message" rows="5" required />
+          </label>
+          {/* Honeypot: real visitors never see or fill this field */}
+          <input type="text" name="_gotcha" className="form-trap" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+          {status === 'error' && (
+            <p className="form-status is-error" role="alert">
+              {c.error}
+            </p>
+          )}
+          <button type="submit" className="cta" disabled={status === 'sending'}>
+            {status === 'sending' ? c.sending : c.send}
+          </button>
+        </form>
+      )}
+      <button type="button" className="step" onClick={() => dialog.current.close()}>
+        {c.close}
+      </button>
+    </dialog>
+  )
+}
+
+function Summary({ lang, onClose, onContact }) {
   const s = SUMMARY[lang]
   const dialog = useRef(null)
 
@@ -343,9 +436,7 @@ function Summary({ lang, onClose }) {
       </ul>
       <p className="summary-tools">{s.tools}</p>
       <div className="contact">
-        <a className="cta" href={`mailto:${EMAIL}`}>
-          {CONTENT[lang].t.mail}
-        </a>
+        <MailAction label={CONTENT[lang].t.mail} primary onContact={onContact} />
         <a className="cta cta-plain" href={LINKEDIN} target="_blank" rel="noreferrer">
           LinkedIn
         </a>
@@ -365,6 +456,7 @@ export default function App() {
   const [persona, setPersona] = useState(null)
   const [index, setIndex] = useState(0)
   const [summaryOpen, setSummaryOpen] = useState(false)
+  const [contactOpen, setContactOpen] = useState(false)
   const [answers, setAnswers] = useState({})
   const [now] = useState(valenciaNow)
   const [startIndex, setStartIndex] = useState(0)
@@ -445,7 +537,16 @@ export default function App() {
           <Scene hourIndex={index} started={started} bubble={started ? copy.ch[index].bubble : copy.introBubble} />
         </div>
         {started ? (
-          <Day key={persona} copy={copy} lang={lang} persona={persona} index={index} setIndex={setIndex} score={score} />
+          <Day
+            key={persona}
+            copy={copy}
+            lang={lang}
+            persona={persona}
+            index={index}
+            setIndex={setIndex}
+            score={score}
+            onContact={() => setContactOpen(true)}
+          />
         ) : (
           <Intro
             copy={copy}
@@ -468,7 +569,11 @@ export default function App() {
         />
       )}
 
-      {summaryOpen && <Summary lang={lang} onClose={() => setSummaryOpen(false)} />}
+      {summaryOpen && (
+        <Summary lang={lang} onClose={() => setSummaryOpen(false)} onContact={() => setContactOpen(true)} />
+      )}
+
+      {contactOpen && <ContactForm lang={lang} onClose={() => setContactOpen(false)} />}
     </div>
   )
 }

@@ -745,6 +745,81 @@ h2 {
   background: var(--ground);
 }
 
+/* Contact form */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.form-intro,
+.form-status {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.form-status {
+  margin: 16px 0;
+  font-weight: 700;
+  color: var(--teal);
+}
+
+.form-status.is-error {
+  margin: 0;
+  color: #a3301c;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--ground);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 400;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: var(--ink);
+  outline: none;
+}
+
+.form .form-trap {
+  display: none;
+}
+
+.form .cta {
+  align-self: flex-start;
+  border: 0;
+  cursor: pointer;
+}
+
+.form .cta:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+button.cta {
+  border: 0;
+}
+
 @media (max-width: 640px) {
   /* Sit in the flow at the end of the page so it never hides the step buttons */
   .ping {

@@ -69,3 +69,34 @@ export const CLOSING = {
     q: "Thanks for spending the day with me. Let's stay in touch.",
   },
 }
+
+// Formspree form id (the part after formspree.io/f/). While it is empty,
+// the contact buttons fall back to a mailto: link.
+export const FORMSPREE_ID = ''
+
+export const CONTACT = {
+  es: {
+    title: 'Escríbeme',
+    intro: 'Cuéntame en qué puedo ayudarte y te respondo por correo.',
+    name: 'Tu nombre',
+    email: 'Tu correo',
+    message: 'Mensaje',
+    send: 'Enviar mensaje',
+    sending: 'Enviando…',
+    sent: 'Mensaje enviado. Gracias: te respondo pronto.',
+    error: 'No se pudo enviar. Inténtalo de nuevo o escríbeme por LinkedIn.',
+    close: 'Cerrar',
+  },
+  en: {
+    title: 'Write to me',
+    intro: "Tell me how I can help and I'll reply by email.",
+    name: 'Your name',
+    email: 'Your email',
+    message: 'Message',
+    send: 'Send message',
+    sending: 'Sending…',
+    sent: "Message sent. Thank you: I'll reply soon.",
+    error: "It couldn't be sent. Try again or message me on LinkedIn.",
+    close: 'Close',
+  },
+}
