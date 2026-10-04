@@ -1166,6 +1166,152 @@ h2 {
   background: var(--ground);
 }
 
+/* Agent chat */
+
+/* Only lay out as a column while open: a closed dialog must stay hidden */
+.agent[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.agent p {
+  margin: 0;
+}
+
+.agent-intro {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.agent-log {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 140px;
+  max-height: 44vh;
+  overflow-y: auto;
+  background: var(--ground);
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.agent-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.agent-suggestions .flow-pill {
+  text-align: left;
+  min-height: 44px;
+  padding: 8px 16px;
+  line-height: 1.3;
+}
+
+.agent-turn {
+  align-self: flex-start;
+  max-width: 92%;
+  background: var(--paper);
+  border-radius: 16px 16px 16px 4px;
+  padding: 10px 14px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.agent-turn strong {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal);
+}
+
+.agent-turn.is-user {
+  align-self: flex-end;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 16px 16px 4px 16px;
+}
+
+.agent-turn.is-user strong {
+  color: var(--yellow);
+}
+
+.agent-turn.is-busy {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.agent-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.agent-label {
+  flex: 1 1 100%;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.agent-form input {
+  flex: 1 1 220px;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--ground);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+}
+
+.agent-form input:focus {
+  border-color: var(--ink);
+  outline: none;
+}
+
+.agent-form .step-next:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.agent-limit {
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.agent-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.agent-teaser {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  max-width: 620px;
+  background: var(--paper);
+  border-radius: 20px;
+  padding: 16px 18px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.agent-teaser p {
+  flex: 1 1 240px;
+  margin: 0;
+}
+
 /* Contact form */
 
 .form {
@@ -1314,4 +1460,9 @@ button.cta {
     transition: none !important;
     animation: none !important;
   }
+}
+
+/* Primary buttons inside dialogs keep their dark fill */
+.summary .step-next {
+  background: var(--ink);
 }

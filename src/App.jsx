@@ -6,6 +6,8 @@ import { FLOW } from './flow.js'
 import { AFTER_HOURS, GAME, TAP_FACTS } from './personal.js'
 import { NOW_COPY, PING_COPY, PINGS, valenciaNow } from './pings.js'
 import {
+  AGENT,
+  AGENT_QUESTIONS,
   AVATARS,
   CLOSING,
   CONTACT,
@@ -526,7 +528,7 @@ function Personal({ lang }) {
   )
 }
 
-function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
+function Day({ copy, lang, persona, index, setIndex, score, onContact, onAgent }) {
   const route = ROUTES[persona]
   const [picks, setPicks] = useState({})
   const [flashes, setFlashes] = useState({})
@@ -615,6 +617,15 @@ function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
       {route.order.map((id) => blocks[id])}
 
       {here.build && <FlowDemo lang={lang} />}
+
+      {here.agent && (
+        <div className="agent-teaser">
+          <p>{AGENT[lang].teaser}</p>
+          <button type="button" className="step step-next" onClick={onAgent}>
+            {AGENT[lang].open}
+          </button>
+        </div>
+      )}
 
       {here.afterHours && <Personal lang={lang} />}
 
@@ -764,6 +775,126 @@ function ContactForm({ lang, onClose }) {
   )
 }
 
+// Chat with the portfolio agent. The conversation lives in App so it survives
+// closing and reopening the dialog.
+function AgentChat({ lang, chat, setChat, onClose, onContact }) {
+  const c = AGENT[lang]
+  const dialog = useRef(null)
+  const log = useRef(null)
+  const [draft, setDraft] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState(null)
+  const asked = chat.filter((turn) => turn.role === 'user').length
+  const left = AGENT_QUESTIONS - asked
+
+  useEffect(() => {
+    dialog.current.showModal()
+  }, [])
+
+  useEffect(() => {
+    log.current.scrollTop = log.current.scrollHeight
+  }, [chat, busy])
+
+  const send = async (text) => {
+    const question = text.trim()
+    if (!question || busy || left <= 0) return
+    const history = chat
+    setChat([...history, { role: 'user', content: question }])
+    setDraft('')
+    setError(null)
+    setBusy(true)
+    try {
+      const response = await fetch('./api/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, history }),
+      })
+      const data = await response.json()
+      if (data.answer) setChat([...history, { role: 'user', content: question }, { role: 'assistant', content: data.answer }])
+      else setError(c.errors[data.error] ?? c.errors.fallback)
+    } catch {
+      setError(c.errors.fallback)
+    }
+    setBusy(false)
+  }
+
+  const contact = () => {
+    dialog.current.close()
+    onContact()
+  }
+
+  return (
+    <dialog className="summary agent" ref={dialog} onClose={onClose} aria-labelledby="agent-title">
+      <h2 id="agent-title">{c.title}</h2>
+      <p className="agent-intro">{c.intro}</p>
+
+      <div className="agent-log" ref={log} aria-live="polite">
+        {chat.length === 0 && (
+          <div className="agent-suggestions">
+            {c.suggestions.map((suggestion) => (
+              <button key={suggestion} type="button" className="flow-pill" onClick={() => send(suggestion)}>
+                {suggestion}
+              </button>
+            ))}
+          </div>
+        )}
+        {chat.map((turn, k) => (
+          <p key={k} className={turn.role === 'user' ? 'agent-turn is-user' : 'agent-turn'}>
+            <strong>{turn.role === 'user' ? c.you : c.agent}</strong>
+            {turn.content}
+          </p>
+        ))}
+        {busy && <p className="agent-turn is-busy">{c.thinking}</p>}
+        {error && (
+          <p className="form-status is-error" role="alert">
+            {error}
+          </p>
+        )}
+      </div>
+
+      {left > 0 ? (
+        <form
+          className="agent-form"
+          onSubmit={(event) => {
+            event.preventDefault()
+            send(draft)
+          }}
+        >
+          <label className="agent-label" htmlFor="agent-question">
+            {c.label}
+          </label>
+          <input
+            id="agent-question"
+            type="text"
+            value={draft}
+            maxLength={400}
+            placeholder={c.placeholder}
+            autoComplete="off"
+            onChange={(event) => setDraft(event.target.value)}
+          />
+          <button type="submit" className="step step-next" disabled={busy || !draft.trim()}>
+            {c.send}
+          </button>
+        </form>
+      ) : (
+        <p className="agent-limit">{c.limit}</p>
+      )}
+
+      <div className="agent-foot">
+        <span>{left > 0 ? c.left(left) : ''}</span>
+        <span className="contact">
+          <button type="button" className="step" onClick={contact}>
+            {c.contact}
+          </button>
+          <button type="button" className="step" onClick={() => dialog.current.close()}>
+            {c.close}
+          </button>
+        </span>
+      </div>
+    </dialog>
+  )
+}
+
 function Summary({ lang, onClose, onContact }) {
   const s = SUMMARY[lang]
   const dialog = useRef(null)
@@ -807,6 +938,8 @@ export default function App() {
   const [index, setIndex] = useState(0)
   const [summaryOpen, setSummaryOpen] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
+  const [agentOpen, setAgentOpen] = useState(false)
+  const [chat, setChat] = useState([])
   const [answers, setAnswers] = useState({})
   const [now] = useState(valenciaNow)
   const [startIndex, setStartIndex] = useState(0)
@@ -858,6 +991,9 @@ export default function App() {
       <nav className="nav">
         <div className="brand">Lucía Belén</div>
         <div className="nav-actions">
+          <button type="button" className="link" onClick={() => setAgentOpen(true)}>
+            {AGENT[lang].open}
+          </button>
           <button type="button" className="link" onClick={() => setSummaryOpen(true)}>
             {SUMMARY[lang].open}
           </button>
@@ -910,6 +1046,7 @@ export default function App() {
             setIndex={setIndex}
             score={score}
             onContact={() => setContactOpen(true)}
+            onAgent={() => setAgentOpen(true)}
           />
         ) : (
           <Intro
@@ -923,7 +1060,7 @@ export default function App() {
         )}
       </main>
 
-      {started && ping && !summaryOpen && (
+      {started && ping && !summaryOpen && !agentOpen && (
         <Ping
           key={index}
           lang={lang}
@@ -935,6 +1072,16 @@ export default function App() {
 
       {summaryOpen && (
         <Summary lang={lang} onClose={() => setSummaryOpen(false)} onContact={() => setContactOpen(true)} />
+      )}
+
+      {agentOpen && (
+        <AgentChat
+          lang={lang}
+          chat={chat}
+          setChat={setChat}
+          onClose={() => setAgentOpen(false)}
+          onContact={() => setContactOpen(true)}
+        />
       )}
 
       {contactOpen && <ContactForm lang={lang} onClose={() => setContactOpen(false)} />}

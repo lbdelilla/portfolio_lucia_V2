@@ -3,7 +3,7 @@ export const HOURS = [
   { time: '08:30', avatar: 'jugo', glow: true, sky: '#FFD7B5', sun: { left: '4%', top: '46%', color: '#FF9F45' } },
   { time: '10:00', avatar: 'pensando', sky: '#BDE4F7', sun: { left: '14%', top: '22%', color: '#FFB52E' } },
   { time: '12:00', avatar: 'construir', build: true, sky: '#9FD3F5', sun: { left: '32%', top: '2%', color: '#FFC93C' } },
-  { time: '14:30', avatar: 'construir', sky: '#FFE39A', sun: { left: '70%', top: '24%', color: '#FFB52E' } },
+  { time: '14:30', avatar: 'construir', agent: true, sky: '#FFE39A', sun: { left: '70%', top: '24%', color: '#FFB52E' } },
   { time: '16:00', avatar: 'sync', team: true, glow: true, sky: '#F7B8A0', sun: { left: '78%', top: '66%', color: '#FF8A4C' } },
   // Night: the sun has set below the frame and the moon rises on the left
   {
@@ -129,5 +129,55 @@ export const DRAG_HINT = {
     moonNext: 'Drag the moon to see what I do next',
     moon: 'Drag the moon to start a new day',
     tap: 'Tap Lucía and she tells you something',
+  },
+}
+
+// How many questions one visit can ask the agent
+export const AGENT_QUESTIONS = 5
+
+export const AGENT = {
+  es: {
+    open: 'Pregúntale a mi agente',
+    title: 'Pregúntale a mi agente',
+    intro: 'Es un agente de IA que responde sobre mi experiencia. Puede equivocarse: para lo importante, escríbeme.',
+    teaser: 'Lo que aprendo, lo aplico: este portfolio tiene su propio agente de IA.',
+    suggestions: ['¿Qué experiencia tiene liderando equipos?', '¿Qué ha automatizado?', '¿Qué hace fuera del trabajo?'],
+    placeholder: 'Escribe tu pregunta',
+    label: 'Tu pregunta',
+    send: 'Preguntar',
+    thinking: 'Pensando…',
+    left: (n) => (n === 1 ? 'Te queda 1 pregunta' : `Te quedan ${n} preguntas`),
+    limit: 'Hasta aquí llega el agente por hoy. Para seguir la conversación, escríbeme.',
+    errors: {
+      declined: 'No puedo responder a eso. Prueba con otra pregunta sobre Lucía.',
+      rate_limited: 'El agente ha recibido muchas preguntas. Inténtalo en unos minutos o escríbeme.',
+      fallback: 'El agente no está disponible ahora mismo. Escríbeme y te respondo yo.',
+    },
+    contact: 'Escríbeme',
+    close: 'Cerrar',
+    you: 'Tú',
+    agent: 'Agente',
+  },
+  en: {
+    open: 'Ask my agent',
+    title: 'Ask my agent',
+    intro: 'An AI agent that answers questions about my experience. It can make mistakes: for anything important, write to me.',
+    teaser: 'What I learn, I apply: this portfolio has its own AI agent.',
+    suggestions: ['What is her experience leading teams?', 'What has she automated?', 'What does she do outside work?'],
+    placeholder: 'Type your question',
+    label: 'Your question',
+    send: 'Ask',
+    thinking: 'Thinking…',
+    left: (n) => (n === 1 ? '1 question left' : `${n} questions left`),
+    limit: "That's as far as the agent goes today. To keep the conversation going, write to me.",
+    errors: {
+      declined: "I can't answer that. Try another question about Lucía.",
+      rate_limited: 'The agent has had a lot of questions. Try again in a few minutes or write to me.',
+      fallback: "The agent isn't available right now. Write to me and I'll answer myself.",
+    },
+    contact: 'Write to me',
+    close: 'Close',
+    you: 'You',
+    agent: 'Agent',
   },
 }
