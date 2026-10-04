@@ -42,6 +42,15 @@ button {
   flex-direction: column;
 }
 
+/* Keep the content centred on wide screens */
+
+.nav,
+.main {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
 /* Nav */
 
 .nav {
@@ -113,7 +122,7 @@ button {
 }
 
 .scene-wrap {
-  flex: 1 1 380px;
+  flex: 1 1 440px;
   min-width: 0;
   display: flex;
   justify-content: center;
