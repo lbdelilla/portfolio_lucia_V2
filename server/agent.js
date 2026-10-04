@@ -12,6 +12,32 @@ const PER_VISITOR = { limit: 6, windowMs: 60 * 60 * 1000 }
 const GLOBAL = { limit: 60, windowMs: 60 * 60 * 1000 }
 const hits = new Map()
 
+const NO_INFO = '[[NO_INFO]]'
+
+// Keeps the questions the agent could not answer, so Lucía can see what is missing
+// from its profile. Only the question text and the date are stored, never who asked.
+// Uses an Upstash Redis store over REST when one is connected; otherwise it only logs.
+async function rememberUnanswered(question) {
+  console.log('[agent] unanswered:', question)
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+  if (!url || !token) return
+  const entry = JSON.stringify({ question, at: new Date().toISOString() })
+  try {
+    await fetch(`${url}/pipeline`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify([
+        ['LPUSH', 'agent:unanswered', entry],
+        ['LTRIM', 'agent:unanswered', 0, 499],
+      ]),
+      signal: AbortSignal.timeout(2000),
+    })
+  } catch (error) {
+    console.error('Could not store the unanswered question:', error.message)
+  }
+}
+
 function allowed(key, { limit, windowMs }) {
   const now = Date.now()
   const entry = hits.get(key)
@@ -76,11 +102,12 @@ export async function ask(payload, visitor) {
     }
 
     if (response.stop_reason === 'refusal') return { status: 200, body: { error: 'declined' } }
-    const answer = response.content
+    const text = response.content
       .filter((block) => block.type === 'text')
       .map((block) => block.text)
       .join('')
-      .trim()
+    const answer = text.replaceAll(NO_INFO, '').trim()
+    if (text.includes(NO_INFO)) await rememberUnanswered(question)
     if (!answer) return { status: 502, body: { error: 'empty' } }
     return { status: 200, body: { answer } }
   } catch (error) {

@@ -139,7 +139,7 @@ export const AGENT = {
   es: {
     open: 'Pregúntale a mi agente',
     title: 'Pregúntale a mi agente',
-    intro: 'Es un agente de IA que responde sobre mi experiencia. Puede equivocarse: para lo importante, escríbeme.',
+    intro: 'Es un agente de IA que responde sobre mi experiencia. Puede equivocarse: para lo importante, escríbeme. Las preguntas que no sepa responder se guardan de forma anónima para mejorarlo.',
     teaser: 'Lo que aprendo, lo aplico: este portfolio tiene su propio agente de IA.',
     suggestions: ['¿Qué experiencia tiene liderando equipos?', '¿Qué ha automatizado?', '¿Qué hace fuera del trabajo?'],
     placeholder: 'Escribe tu pregunta',
@@ -161,7 +161,7 @@ export const AGENT = {
   en: {
     open: 'Ask my agent',
     title: 'Ask my agent',
-    intro: 'An AI agent that answers questions about my experience. It can make mistakes: for anything important, write to me.',
+    intro: 'An AI agent that answers questions about my experience. It can make mistakes: for anything important, write to me. Questions it cannot answer are stored anonymously to improve it.',
     teaser: 'What I learn, I apply: this portfolio has its own AI agent.',
     suggestions: ['What is her experience leading teams?', 'What has she automated?', 'What does she do outside work?'],
     placeholder: 'Type your question',
