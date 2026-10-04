@@ -313,7 +313,7 @@ function Game({ lang }) {
           <button
             key={statement.text}
             type="button"
-            className={pick === k ? 'option is-picked' : 'option'}
+            className={pick !== k ? 'option' : statement.lie ? 'option is-picked is-right' : 'option is-picked'}
             aria-pressed={pick === k}
             onClick={() => setPick(k)}
           >
@@ -322,7 +322,7 @@ function Game({ lang }) {
         ))}
       </div>
       {pick !== null && (
-        <div className="reveal" aria-live="polite">
+        <div className={statements[pick].lie ? 'reveal is-right' : 'reveal'} aria-live="polite">
           <strong>{statements[pick].lie ? c.right : c.wrong}</strong>
           <span>{statements[pick].detail}</span>
         </div>
@@ -378,7 +378,7 @@ function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
             <button
               key={label}
               type="button"
-              className={pick === k ? 'option is-picked' : 'option'}
+              className={pick !== k ? 'option' : k === chapter.mine ? 'option is-picked is-right' : 'option is-picked'}
               aria-pressed={pick === k}
               onClick={() => setPicks({ ...picks, [index]: k })}
             >
@@ -387,7 +387,7 @@ function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
           ))}
         </div>
         {pick !== undefined && (
-          <div className="reveal" aria-live="polite">
+          <div className={pick === chapter.mine ? 'reveal is-right' : 'reveal'} aria-live="polite">
             <strong>{chapter.feedback[pick]}</strong>
             <span>{chapter.reveal}</span>
           </div>
@@ -502,7 +502,7 @@ function Ping({ lang, ping, answer, onAnswer }) {
         </>
       ) : (
         <>
-          <p className="ping-result">
+          <p className={answer === ping.answer ? 'ping-result is-match' : 'ping-result'}>
             <strong>{answer === ping.answer ? c.match : `${c.differ} ${c.options[ping.answer]}.`}</strong> {ping.why}
           </p>
           <button type="button" className="step step-next" onClick={() => setClosed(true)}>

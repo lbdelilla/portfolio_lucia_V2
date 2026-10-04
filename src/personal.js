@@ -28,7 +28,7 @@ export const AFTER_HOURS = {
     factsTitle: 'Para conocerme un poco',
     facts: [
       { title: 'Idiomas', text: 'Me encanta aprender idiomas. Ahora estudio coreano.' },
-      { title: 'Canela', text: 'Tengo una perrita que se llama Canela.' },
+      { title: 'Mascota', text: 'Tengo una perrita que se llama Canela.' },
       { title: 'Cine', text: 'Mi película favorita es Grease y amo los musicales. En ciencia ficción, mi saga es Star Wars.' },
       { title: 'Viajes', text: 'Quiero volver a Grecia e Italia. Me falta conocer Asia y Suecia.' },
       { title: 'Gimnasio', text: 'No me gusta el deporte, pero sí ir al gimnasio.' },
@@ -43,7 +43,7 @@ export const AFTER_HOURS = {
     factsTitle: 'To get to know me a little',
     facts: [
       { title: 'Languages', text: "I love learning languages. Right now I'm studying Korean." },
-      { title: 'Canela', text: 'I have a little dog called Canela.' },
+      { title: 'Pet', text: 'I have a little dog called Canela.' },
       { title: 'Films', text: 'My favourite film is Grease and I love musicals. In science fiction, my saga is Star Wars.' },
       { title: 'Travel', text: "I want to go back to Greece and Italy. Asia and Sweden are still on my list." },
       { title: 'Gym', text: "I don't like sports, but I do like going to the gym." },

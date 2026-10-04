@@ -446,6 +446,16 @@ h2 {
   font-weight: 700;
 }
 
+/* Green when the visitor's pick is the right one (or the same as Lucía's) */
+.option.is-picked.is-right {
+  border-color: var(--teal);
+  background: #bfe8d2;
+}
+
+.reveal.is-right {
+  background: #d3f0e0;
+}
+
 .reveal,
 .flash-card {
   display: flex;
@@ -632,6 +642,12 @@ h2 {
   font-family: var(--display);
   font-size: 18px;
   font-weight: 600;
+}
+
+.ping-result.is-match {
+  background: #1f6f63;
+  border-radius: 12px;
+  padding: 10px 12px;
 }
 
 .ping-options {
