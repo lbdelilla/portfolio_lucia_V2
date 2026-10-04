@@ -132,6 +132,7 @@ button {
 
 .drag-hint {
   margin: 0;
+  text-align: center;
   font-size: 14px;
   color: var(--ink-soft);
 }
@@ -232,6 +233,18 @@ button {
 
 .avatar.is-active {
   opacity: 1;
+}
+
+.avatar-hit {
+  position: absolute;
+  left: 30%;
+  bottom: 0;
+  width: 40%;
+  height: 72%;
+  border: 0;
+  border-radius: 40% 40% 0 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .clock {
@@ -675,6 +688,44 @@ h2 {
 .closing-score {
   font-size: 16px;
   color: var(--yellow);
+}
+
+/* After work: personal facts */
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 620px;
+}
+
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 12px;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--paper);
+  border-radius: 18px;
+  padding: 16px 18px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.fact strong {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+.game-ask {
+  margin: 0;
+  font-size: 16px;
 }
 
 /* Team recommendations */

@@ -6,7 +6,25 @@ export const HOURS = [
   { time: '14:30', avatar: 'construir', sky: '#FFE39A', sun: { left: '70%', top: '24%', color: '#FFB52E' } },
   { time: '16:00', avatar: 'sync', team: true, sky: '#F7B8A0', sun: { left: '78%', top: '66%', color: '#FF8A4C' } },
   // Night: the sun has set below the frame and the moon rises on the left
-  { time: '18:30', avatar: 'despedida', sky: '#2B2A5C', night: true, sun: { left: '90%', top: '110%', color: '#FF8A4C' } },
+  {
+    time: '18:30',
+    avatar: 'despedida',
+    sky: '#2B2A5C',
+    night: true,
+    closing: true,
+    moon: { left: '8%', top: '22%' },
+    sun: { left: '90%', top: '110%', color: '#FF8A4C' },
+  },
+  // After work: only reachable from 18:30, and about Lucía rather than her job
+  {
+    time: '20:30',
+    avatar: 'casa',
+    sky: '#1B1A40',
+    night: true,
+    afterHours: true,
+    moon: { left: '30%', top: '3%' },
+    sun: { left: '90%', top: '110%', color: '#FF8A4C' },
+  },
 ]
 
 export const INTRO_AVATAR = 'saludo'
@@ -100,6 +118,16 @@ export const CONTACT = {
 }
 
 export const DRAG_HINT = {
-  es: { sun: 'Arrastra el sol para cambiar de hora', moon: 'Arrastra la luna para empezar un nuevo día' },
-  en: { sun: 'Drag the sun to change the hour', moon: 'Drag the moon to start a new day' },
+  es: {
+    sun: 'Arrastra el sol para cambiar de hora',
+    moonNext: 'Arrastra la luna para ver qué hago después',
+    moon: 'Arrastra la luna para empezar un nuevo día',
+    tap: 'Toca a Lucía y te cuenta algo',
+  },
+  en: {
+    sun: 'Drag the sun to change the hour',
+    moonNext: 'Drag the moon to see what I do next',
+    moon: 'Drag the moon to start a new day',
+    tap: 'Tap Lucía and she tells you something',
+  },
 }

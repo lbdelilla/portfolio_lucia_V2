@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { CONTENT } from './content.js'
+import { AFTER_HOURS, GAME, TAP_FACTS } from './personal.js'
 import { NOW_COPY, PING_COPY, PINGS, valenciaNow } from './pings.js'
 import {
   AVATARS,
@@ -36,7 +37,10 @@ function prefersReducedMotion() {
 }
 
 // The sun's path across the sky, as percentages of the scene: one point per hour
-const SUN_PATH = HOURS.map((h) => ({ left: parseFloat(h.sun.left), top: parseFloat(h.sun.top) }))
+const SUN_PATH = HOURS.filter((h) => !h.afterHours).map((h) => ({
+  left: parseFloat(h.sun.left),
+  top: parseFloat(h.sun.top),
+}))
 const SUN_WIDTH = 18
 
 // Where the sun sits on its arc for a given horizontal position, and which hour that is
@@ -51,8 +55,10 @@ function sunAt(left) {
   return { top: from.top + (to.top - from.top) * t, index: t < 0.5 ? k - 1 : k }
 }
 
-function Scene({ hourIndex, started, bubble, onHour }) {
+function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
   const root = useRef(null)
+  // The fact the avatar is telling, and the hour it was told in: { hour, i }
+  const [fact, setFact] = useState(null)
   const dragging = useRef(false)
   const moonStart = useRef(null)
   const hour = HOURS[started ? hourIndex : 0]
@@ -63,6 +69,7 @@ function Scene({ hourIndex, started, bubble, onHour }) {
     settleOn.current = hour
   }, [hour])
   const avatar = started ? hour.avatar : INTRO_AVATAR
+  const telling = started && fact && fact.hour === hourIndex
 
   const settleSun = (sun, target, duration) =>
     gsap.to(sun, {
@@ -80,7 +87,12 @@ function Scene({ hourIndex, started, bubble, onHour }) {
       // While the visitor is dragging the sun, it follows the pointer instead
       if (dragging.current) gsap.to('.sun', { backgroundColor: hour.sun.color, duration })
       else settleSun('.sun', hour, duration)
-      gsap.to('.moon', { top: started && hour.night ? '22%' : '110%', duration, ease: 'power2.inOut' })
+      gsap.to('.moon', {
+        left: hour.moon?.left ?? '8%',
+        top: started && hour.night ? hour.moon.top : '110%',
+        duration,
+        ease: 'power2.inOut',
+      })
       gsap.fromTo('.bubble', { scale: 0.85, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: duration / 2, ease: 'back.out(2)' })
     },
     { scope: root, dependencies: [hourIndex, started] },
@@ -121,7 +133,8 @@ function Scene({ hourIndex, started, bubble, onHour }) {
     settleSun(event.currentTarget, settleOn.current, prefersReducedMotion() ? 0 : 0.5)
   }
 
-  // At night there is no sun to drag: pulling the moon aside starts a new day
+  // At night there is no sun to drag: pulling the moon aside moves on to the
+  // after-work hour, and from there to a new day
   const startMoonDrag = (event) => {
     if (!started || !hour.night) return
     event.preventDefault()
@@ -133,7 +146,7 @@ function Scene({ hourIndex, started, bubble, onHour }) {
     if (moonStart.current === null) return
     if (Math.abs(event.clientX - moonStart.current) > 24) {
       moonStart.current = null
-      onHour(0)
+      onHour((hourIndex + 1) % HOURS.length)
     }
   }
 
@@ -171,8 +184,18 @@ function Scene({ hourIndex, started, bubble, onHour }) {
           />
         ))}
       </div>
+      {started && (
+        <button
+          type="button"
+          className="avatar-hit"
+          aria-label={tapLabel}
+          onClick={() => setFact({ hour: hourIndex, i: fact ? fact.i + 1 : 0 })}
+        />
+      )}
       <div className="clock">{hour.time}</div>
-      <div className="bubble">{bubble}</div>
+      <div className="bubble" aria-live="polite">
+        {telling ? facts[fact.i % facts.length] : bubble}
+      </div>
     </div>
   )
 }
@@ -275,6 +298,59 @@ function Actions({ lang, order, mailLabel, onContact }) {
   )
 }
 
+function Game({ lang }) {
+  const c = AFTER_HOURS[lang]
+  const statements = GAME[lang]
+  const [pick, setPick] = useState(null)
+  if (!statements.some((statement) => statement.lie)) return null
+
+  return (
+    <div className="choice">
+      <p className="question">{c.gameTitle}</p>
+      <p className="game-ask">{c.gameAsk}</p>
+      <div className="options">
+        {statements.map((statement, k) => (
+          <button
+            key={statement.text}
+            type="button"
+            className={pick === k ? 'option is-picked' : 'option'}
+            aria-pressed={pick === k}
+            onClick={() => setPick(k)}
+          >
+            {statement.text}
+          </button>
+        ))}
+      </div>
+      {pick !== null && (
+        <div className="reveal" aria-live="polite">
+          <strong>{statements[pick].lie ? c.right : c.wrong}</strong>
+          <span>{statements[pick].detail}</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function Personal({ lang }) {
+  const c = AFTER_HOURS[lang]
+  return (
+    <>
+      <section className="facts" aria-label={c.factsTitle}>
+        <p className="question">{c.factsTitle}</p>
+        <div className="facts-grid">
+          {c.facts.map((item) => (
+            <div key={item.title} className="fact">
+              <strong>{item.title}</strong>
+              <span>{item.text}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+      <Game lang={lang} />
+    </>
+  )
+}
+
 function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
   const route = ROUTES[persona]
   const [picks, setPicks] = useState({})
@@ -282,6 +358,7 @@ function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
   const chapter = copy.ch[index]
   const pick = picks[index]
   const flashOpen = flashes[index] ?? route.flashOpen
+  const here = HOURS[index]
   const isLast = index === HOURS.length - 1
 
   const blocks = {
@@ -341,17 +418,20 @@ function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
   return (
     <div className="panel">
       <div className="hours" role="group" aria-label={copy.t.dayLabel}>
-        {HOURS.map((h, k) => (
-          <button
-            key={h.time}
-            type="button"
-            className={k === index ? 'hour is-current' : k < index ? 'hour is-done' : 'hour'}
-            aria-pressed={k === index}
-            onClick={() => setIndex(k)}
-          >
-            {h.time}
-          </button>
-        ))}
+        {HOURS.map((h, k) =>
+          // The after-work hour only shows up once the visitor gets there
+          h.afterHours && k !== index ? null : (
+            <button
+              key={h.time}
+              type="button"
+              className={k === index ? 'hour is-current' : k < index ? 'hour is-done' : 'hour'}
+              aria-pressed={k === index}
+              onClick={() => setIndex(k)}
+            >
+              {h.time}
+            </button>
+          ),
+        )}
       </div>
 
       <h2>{chapter.title}</h2>
@@ -359,13 +439,17 @@ function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
 
       {route.order.map((id) => blocks[id])}
 
-      {isLast && (
+      {here.afterHours && <Personal lang={lang} />}
+
+      {here.closing && (
         <div className="closing">
           <p className="closing-title">{CLOSING[lang][persona]}</p>
           {score && <p className="closing-score">{score}</p>}
           <Actions lang={lang} order={route.actions} mailLabel={copy.t.mail} onContact={onContact} />
         </div>
       )}
+
+      {here.afterHours && <Actions lang={lang} order={route.actions} mailLabel={copy.t.mail} onContact={onContact} />}
 
       <div className="steps">
         {index > 0 && (
@@ -375,7 +459,7 @@ function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
         )}
         {!isLast && (
           <button type="button" className="step step-next" onClick={() => setIndex(index + 1)}>
-            {copy.t.next} · {HOURS[index + 1].time}
+            {HOURS[index + 1].afterHours ? AFTER_HOURS[lang].next : `${copy.t.next} · ${HOURS[index + 1].time}`}
           </button>
         )}
       </div>
@@ -620,9 +704,17 @@ export default function App() {
             hourIndex={index}
             started={started}
             bubble={started ? copy.ch[index].bubble : copy.introBubble}
+            facts={TAP_FACTS[lang]}
+            tapLabel={DRAG_HINT[lang].tap}
             onHour={setIndex}
           />
-          {started && <p className="drag-hint">{DRAG_HINT[lang][HOURS[index].night ? 'moon' : 'sun']}</p>}
+          {started && (
+            <p className="drag-hint">
+              {DRAG_HINT[lang][!HOURS[index].night ? 'sun' : HOURS[index].afterHours ? 'moon' : 'moonNext']}
+              {' · '}
+              {DRAG_HINT[lang].tap}
+            </p>
+          )}
         </div>
         {started ? (
           <Day
