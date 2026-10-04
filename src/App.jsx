@@ -96,6 +96,7 @@ function Scene({ hourIndex, started, bubble, onHour }) {
 
   const startSunDrag = (event) => {
     if (!started || hour.night) return
+    event.preventDefault()
     dragging.current = true
     event.currentTarget.setPointerCapture(event.pointerId)
     gsap.killTweensOf(event.currentTarget, 'left,top')
@@ -123,6 +124,7 @@ function Scene({ hourIndex, started, bubble, onHour }) {
   // At night there is no sun to drag: pulling the moon aside starts a new day
   const startMoonDrag = (event) => {
     if (!started || !hour.night) return
+    event.preventDefault()
     moonStart.current = event.clientX
     event.currentTarget.setPointerCapture(event.pointerId)
   }

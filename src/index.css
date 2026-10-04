@@ -147,6 +147,10 @@ button {
 /* Scene */
 
 .scene {
+  /* No text caret or accidental text selection while dragging the sun */
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
   position: relative;
   width: 100%;
   max-width: 540px;
