@@ -7,7 +7,6 @@ import {
   AVATARS,
   CLOSING,
   CONTACT,
-  EMAIL,
   FORMSPREE_ID,
   HOURS,
   INTRO_AVATAR,
@@ -151,18 +150,10 @@ function Testimonials({ lang }) {
 }
 
 function MailAction({ label, primary, onContact }) {
-  const className = primary ? 'cta' : 'cta cta-plain'
-  if (FORMSPREE_ID) {
-    return (
-      <button type="button" className={className} onClick={onContact}>
-        {label}
-      </button>
-    )
-  }
   return (
-    <a className={className} href={`mailto:${EMAIL}`}>
+    <button type="button" className={primary ? 'cta' : 'cta cta-plain'} onClick={onContact}>
       {label}
-    </a>
+    </button>
   )
 }
 

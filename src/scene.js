@@ -46,7 +46,6 @@ export const SUMMARY = {
   },
 }
 
-export const EMAIL = 'lbdelilla@gmail.com'
 export const LINKEDIN = 'https://www.linkedin.com/in/luciabelen/'
 
 // What changes for each kind of visitor: the order of the blocks inside an hour,
@@ -70,9 +69,8 @@ export const CLOSING = {
   },
 }
 
-// Formspree form id (the part after formspree.io/f/). While it is empty,
-// the contact buttons fall back to a mailto: link.
-export const FORMSPREE_ID = ''
+// Formspree form id (the part after formspree.io/f/); messages arrive in Lucía's inbox.
+export const FORMSPREE_ID = 'xqkogwbo'
 
 export const CONTACT = {
   es: {
