@@ -1,10 +1,10 @@
 // One entry per hour of the day, in order. `avatar` is a file in public/avatar.
 export const HOURS = [
-  { time: '08:30', avatar: 'jugo', sky: '#FFD7B5', sun: { left: '4%', top: '46%', color: '#FF9F45' } },
+  { time: '08:30', avatar: 'jugo', glow: true, sky: '#FFD7B5', sun: { left: '4%', top: '46%', color: '#FF9F45' } },
   { time: '10:00', avatar: 'pensando', sky: '#BDE4F7', sun: { left: '14%', top: '22%', color: '#FFB52E' } },
   { time: '12:00', avatar: 'construir', build: true, sky: '#9FD3F5', sun: { left: '32%', top: '2%', color: '#FFC93C' } },
   { time: '14:30', avatar: 'construir', sky: '#FFE39A', sun: { left: '70%', top: '24%', color: '#FFB52E' } },
-  { time: '16:00', avatar: 'sync', team: true, sky: '#F7B8A0', sun: { left: '78%', top: '66%', color: '#FF8A4C' } },
+  { time: '16:00', avatar: 'sync', team: true, glow: true, sky: '#F7B8A0', sun: { left: '78%', top: '66%', color: '#FF8A4C' } },
   // Night: the sun has set below the frame and the moon rises on the left
   {
     time: '18:30',

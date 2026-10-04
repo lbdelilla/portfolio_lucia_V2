@@ -20,6 +20,8 @@ import {
 import { CV, TESTIMONIALS } from './testimonials.js'
 
 gsap.registerPlugin(useGSAP)
+// Handy when debugging animations from the browser console during development
+if (import.meta.env.DEV) window.gsap = gsap
 
 const PERSONA_COLORS = { r: '#FFD166', c: '#1F6F63', q: '#FF6F59' }
 
@@ -36,6 +38,20 @@ function initialLang() {
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
+
+// Fixed star positions for the night sky: [left %, top %, size px, twinkle delay s]
+const STARS = [
+  [8, 44, 3, 0], [16, 12, 2, 0.6], [24, 30, 3, 1.1], [34, 20, 2, 0.3], [44, 38, 2, 1.6], [52, 26, 3, 0.9],
+  [60, 34, 2, 0.2], [68, 24, 3, 1.3], [76, 40, 2, 0.7], [84, 28, 3, 1.8], [92, 46, 2, 0.4], [90, 30, 2, 1.0],
+  [4, 26, 2, 1.4], [38, 50, 2, 0.5],
+]
+
+// Confetti pieces for a matching Slack answer: [x px, y px, rotation deg, colour]
+const CONFETTI = [
+  [-70, -60, 200, '#ffd166'], [-40, -90, -160, '#bfe8d2'], [-10, -70, 240, '#ffffff'], [30, -95, -220, '#ffd166'],
+  [60, -65, 180, '#bfe8d2'], [90, -40, -140, '#ff6f59'], [-95, -30, 260, '#ffffff'], [10, -110, -200, '#ff6f59'],
+  [45, -40, 150, '#ffd166'], [-55, -35, -240, '#bfe8d2'],
+]
 
 // The sun's path across the sky, as percentages of the scene: one point per hour
 const SUN_PATH = HOURS.filter((h) => !h.afterHours).map((h) => ({
@@ -95,6 +111,11 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
         ease: 'power2.inOut',
       })
       gsap.fromTo('.bubble', { scale: 0.85, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: duration / 2, ease: 'back.out(2)' })
+      gsap.fromTo(
+        '.clock',
+        { rotationX: -80, transformPerspective: 400, autoAlpha: 0 },
+        { rotationX: 0, autoAlpha: 1, duration: duration / 2, ease: 'power2.out' },
+      )
     },
     { scope: root, dependencies: [hourIndex, started] },
   )
@@ -102,7 +123,17 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
   useGSAP(
     () => {
       if (prefersReducedMotion()) return
-      gsap.to('.avatars', { yPercent: -1.6, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1 })
+      // Page entrance: hills rise, the sun comes up, Lucía pops in; then she keeps gently bobbing
+      gsap.from('.hill', { yPercent: 120, duration: 0.9, stagger: 0.12, ease: 'power3.out' })
+      gsap.fromTo(
+        '.sun',
+        { top: '110%' },
+        { top: HOURS[0].sun.top, duration: 1.3, ease: 'power2.out', overwrite: 'auto' },
+      )
+      gsap
+        .timeline()
+        .from('.avatars', { yPercent: 25, autoAlpha: 0, duration: 0.8, delay: 0.25, ease: 'back.out(1.4)' })
+        .to('.avatars', { yPercent: -1.6, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1 })
     },
     { scope: root },
   )
@@ -156,7 +187,22 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
   }
 
   return (
-    <div className={started ? 'scene is-live' : 'scene'} ref={root} style={{ backgroundColor: HOURS[0].sky }}>
+    <div
+      className={['scene', started && 'is-live', started && hour.night && 'is-night', started && hour.glow && 'is-glow']
+        .filter(Boolean)
+        .join(' ')}
+      ref={root}
+      style={{ backgroundColor: HOURS[0].sky }}
+    >
+      <div className="glow" />
+      <div className="stars" aria-hidden="true">
+        {STARS.map(([left, top, size, delay]) => (
+          <span
+            key={`${left}-${top}`}
+            style={{ left: `${left}%`, top: `${top}%`, width: size, height: size, animationDelay: `${delay}s` }}
+          />
+        ))}
+      </div>
       <div
         className="sun"
         style={{ left: HOURS[0].sun.left, top: HOURS[0].sun.top, backgroundColor: HOURS[0].sun.color }}
@@ -173,6 +219,8 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
         onPointerUp={endMoonDrag}
         onPointerCancel={endMoonDrag}
       />
+      <div className="cloud cloud-a" />
+      <div className="cloud cloud-b" />
       <div className="hill hill-left" />
       <div className="hill hill-right" />
       <div className="avatars">
@@ -572,6 +620,13 @@ function Ping({ lang, ping, answer, onAnswer }) {
         </>
       ) : (
         <>
+          {answer === ping.answer && (
+            <div className="confetti" aria-hidden="true">
+              {CONFETTI.map(([x, y, turn, color]) => (
+                <span key={`${x}${y}`} style={{ '--x': `${x}px`, '--y': `${y}px`, '--turn': `${turn}deg`, background: color }} />
+              ))}
+            </div>
+          )}
           <p className={answer === ping.answer ? 'ping-result is-match' : 'ping-result'}>
             <strong>{answer === ping.answer ? c.match : `${c.differ} ${c.options[ping.answer]}.`}</strong> {ping.why}
           </p>

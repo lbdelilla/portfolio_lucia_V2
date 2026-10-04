@@ -220,19 +220,115 @@ button {
   cursor: grabbing;
 }
 
+/* Poses swap with a slide: the old one drifts out, the new one lands with a small bounce */
 .avatar {
   position: absolute;
   left: 50%;
   bottom: -3%;
   height: 83%;
   width: auto;
-  transform: translateX(-50%);
+  transform: translateX(-38%) scale(0.96);
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.55s cubic-bezier(0.2, 1.5, 0.4, 1);
 }
 
 .avatar.is-active {
+  transform: translateX(-50%);
   opacity: 1;
+}
+
+/* Sky: sunrise/sunset glow, drifting clouds by day, stars at night */
+.glow,
+.stars {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+}
+
+.glow {
+  background: linear-gradient(to top, rgb(255 138 76 / 0.6), rgb(255 209 102 / 0.25) 45%, transparent 75%);
+}
+
+.scene.is-glow .glow,
+.scene.is-night .stars {
+  opacity: 1;
+}
+
+.stars span {
+  position: absolute;
+  border-radius: 50%;
+  background: #f4f1de;
+  animation: twinkle 2.4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  50% {
+    opacity: 0.25;
+    transform: scale(0.7);
+  }
+}
+
+.cloud {
+  position: absolute;
+  width: 22%;
+  height: 6.5%;
+  border-radius: 999px;
+  background: #ffffff;
+  opacity: 0.85;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+  animation: drift 55s linear infinite;
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.cloud::before {
+  left: 16%;
+  bottom: 35%;
+  width: 40%;
+}
+
+.cloud::after {
+  left: 46%;
+  bottom: 25%;
+  width: 30%;
+}
+
+.cloud-a {
+  top: 26%;
+  animation-delay: -12s;
+}
+
+.cloud-b {
+  top: 40%;
+  width: 16%;
+  animation-duration: 75s;
+  animation-delay: -45s;
+}
+
+.scene.is-night .cloud {
+  opacity: 0;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-160%);
+  }
+
+  to {
+    transform: translateX(680%);
+  }
 }
 
 .avatar-hit {
@@ -632,6 +728,36 @@ h2 {
   height: 10px;
   border-radius: 50%;
   background: var(--coral);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+/* A small burst when the visitor makes the same call as Lucía */
+.confetti {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  pointer-events: none;
+}
+
+.confetti span {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: confetti 0.95s ease-out forwards;
+}
+
+@keyframes confetti {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), calc(var(--y) + 40px)) rotate(var(--turn));
+  }
 }
 
 .ping-text strong {
