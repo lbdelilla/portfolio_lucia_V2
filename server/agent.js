@@ -14,13 +14,20 @@ const hits = new Map()
 
 const NO_INFO = '[[NO_INFO]]'
 
+// The store's variable names depend on the prefix chosen when it was connected
+// in Vercel (KV_, STORAGE_, UPSTASH_...), so look them up by their ending.
+function findEnv(pattern) {
+  const name = Object.keys(process.env).find((key) => pattern.test(key) && !key.includes('READ_ONLY'))
+  return name ? process.env[name] : undefined
+}
+
 // Keeps the questions the agent could not answer, so Lucía can see what is missing
 // from its profile. Only the question text and the date are stored, never who asked.
 // Uses an Upstash Redis store over REST when one is connected; otherwise it only logs.
 async function rememberUnanswered(question) {
   console.log('[agent] unanswered:', question)
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+  const url = findEnv(/(_REST_API_URL|REDIS_REST_URL)$/)
+  const token = findEnv(/(_REST_API_TOKEN|REDIS_REST_TOKEN)$/)
   if (!url || !token) return
   const entry = JSON.stringify({ question, at: new Date().toISOString() })
   try {
