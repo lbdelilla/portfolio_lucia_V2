@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { CONTENT } from './content.js'
+import { FLOW } from './flow.js'
 import { AFTER_HOURS, GAME, TAP_FACTS } from './personal.js'
 import { NOW_COPY, PING_COPY, PINGS, valenciaNow } from './pings.js'
 import {
@@ -298,6 +299,73 @@ function Actions({ lang, order, mailLabel, onContact }) {
   )
 }
 
+function Picker({ label, options, value, onChange, disabled }) {
+  return (
+    <div className="flow-picker" role="group" aria-label={label}>
+      <span className="flow-picker-label">{label}</span>
+      {options.map((option, k) => (
+        <button
+          key={option}
+          type="button"
+          className={value === k ? 'flow-pill is-current' : 'flow-pill'}
+          aria-pressed={value === k}
+          disabled={disabled}
+          onClick={() => onChange(k)}
+        >
+          {option}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+// A runnable miniature of the cohort-creation automation
+function FlowDemo({ lang }) {
+  const c = FLOW[lang]
+  const [program, setProgram] = useState(0)
+  const [region, setRegion] = useState(0)
+  // How many steps have completed; null while idle
+  const [progress, setProgress] = useState(null)
+  const running = progress !== null && progress < c.steps.length
+  const finished = progress === c.steps.length
+
+  useEffect(() => {
+    if (!running) return
+    const id = setTimeout(() => setProgress(progress + 1), prefersReducedMotion() ? 0 : 700)
+    return () => clearTimeout(id)
+  }, [running, progress])
+
+  return (
+    <section className="flow" aria-label={c.title}>
+      <p className="question">{c.title}</p>
+      <p className="flow-intro">{c.intro}</p>
+      <Picker label={c.programLabel} options={c.programs} value={program} onChange={setProgram} disabled={running} />
+      <Picker label={c.regionLabel} options={c.regions} value={region} onChange={setRegion} disabled={running} />
+      <ol className="flow-steps">
+        {c.steps.map((step, k) => {
+          const state = progress === null ? 'idle' : k < progress ? 'done' : k === progress ? 'active' : 'idle'
+          return (
+            <li key={step.kind} className={`flow-step is-${state}`}>
+              <span className="flow-dot" aria-hidden="true" />
+              <span>
+                <strong>{step.kind}</strong> {step.text}
+              </span>
+            </li>
+          )
+        })}
+      </ol>
+      {finished && (
+        <p className="flow-done" role="status">
+          {c.done(c.programs[program], c.regions[region])}
+        </p>
+      )}
+      <button type="button" className="step step-next" disabled={running} onClick={() => setProgress(0)}>
+        {running ? c.running : finished ? c.again : c.run}
+      </button>
+    </section>
+  )
+}
+
 function Game({ lang }) {
   const c = AFTER_HOURS[lang]
   const statements = GAME[lang]
@@ -438,6 +506,8 @@ function Day({ copy, lang, persona, index, setIndex, score, onContact }) {
       <p className="lead">{chapter.body}</p>
 
       {route.order.map((id) => blocks[id])}
+
+      {here.build && <FlowDemo lang={lang} />}
 
       {here.afterHours && <Personal lang={lang} />}
 
@@ -698,7 +768,7 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="main" ref={main}>
+      <main className={started ? 'main is-day' : 'main'} ref={main}>
         <div className="scene-wrap">
           <Scene
             hourIndex={index}

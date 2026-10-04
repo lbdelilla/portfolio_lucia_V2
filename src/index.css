@@ -706,6 +706,158 @@ h2 {
   color: var(--yellow);
 }
 
+/* Runnable automation */
+
+.flow {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 620px;
+  background: var(--paper);
+  border-radius: 24px;
+  padding: 22px;
+}
+
+.flow p {
+  margin: 0;
+}
+
+.flow-intro {
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.flow-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.flow-picker-label {
+  min-width: 78px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.flow-pill {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.flow-pill.is-current {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.flow-pill:disabled {
+  cursor: default;
+}
+
+.flow-steps {
+  list-style: none;
+  margin: 4px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.flow-step {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 0 0 18px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  transition: color 0.3s ease;
+}
+
+.flow-step strong {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* The line joining each step to the next one */
+.flow-step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 22px;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+  transition: background 0.3s ease;
+}
+
+.flow-step:last-child {
+  padding-bottom: 0;
+}
+
+.flow-dot {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.flow-step.is-active {
+  color: var(--ink);
+}
+
+.flow-step.is-active .flow-dot {
+  border-color: var(--coral);
+  background: var(--coral);
+  animation: pulse 0.7s ease-in-out infinite;
+}
+
+.flow-step.is-done {
+  color: var(--ink);
+}
+
+.flow-step.is-done .flow-dot {
+  border-color: var(--teal);
+  background: var(--teal);
+}
+
+.flow-step.is-done:not(:last-child)::before {
+  background: var(--teal);
+}
+
+.flow-done {
+  background: #d3f0e0;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.flow .step-next {
+  align-self: flex-start;
+}
+
+.flow .step-next:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 /* After work: personal facts */
 
 .facts {
@@ -923,6 +1075,44 @@ h2 {
 
 button.cta {
   border: 0;
+}
+
+/* Wide screens: the scene stays in view while the hour's content scrolls,
+   and the automation runs left to right like a real workflow */
+@media (min-width: 900px) {
+  .main.is-day {
+    align-items: flex-start;
+  }
+
+  .main.is-day .scene-wrap {
+    position: sticky;
+    top: 24px;
+  }
+
+  .flow {
+    max-width: none;
+  }
+
+  .flow-steps {
+    flex-direction: row;
+  }
+
+  .flow-step {
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 12px 0 0;
+    font-size: 14px;
+  }
+
+  .flow-step:not(:last-child)::before {
+    left: 26px;
+    right: 4px;
+    top: 10px;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+  }
 }
 
 @media (max-width: 640px) {

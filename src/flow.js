@@ -1,0 +1,42 @@
+// The automation visitors can run at 12:00. It is an illustrative example,
+// not the real workflow: the steps are deliberately generic.
+export const FLOW = {
+  es: {
+    title: 'Pruébala: crea una cohorte',
+    intro: 'Un ejemplo simplificado del tipo de automatización que construyo. Elige y pulsa ejecutar.',
+    programLabel: 'Programa',
+    regionLabel: 'Región',
+    programs: ['AI Engineering', 'AI Engineering for Devs'],
+    regions: ['España', 'Latinoamérica'],
+    run: 'Ejecutar automatización',
+    running: 'Ejecutando…',
+    again: 'Probar otra vez',
+    steps: [
+      { kind: 'Disparador', text: 'Se pide una cohorte nueva' },
+      { kind: 'Paso 1', text: 'Se crea en la plataforma' },
+      { kind: 'Paso 2', text: 'Se registra en el tablero' },
+      { kind: 'Paso 3', text: 'Aviso por Slack al equipo' },
+      { kind: 'Paso 4', text: 'Checklist de inicio programado' },
+    ],
+    done: (program, region) => `Cohorte de ${program} en ${region} creada. Nadie tuvo que copiar ni pegar nada.`,
+  },
+  en: {
+    title: 'Try it: create a cohort',
+    intro: 'A simplified example of the kind of automation I build. Choose and press run.',
+    programLabel: 'Program',
+    regionLabel: 'Region',
+    programs: ['AI Engineering', 'AI Engineering for Devs'],
+    regions: ['Spain', 'Latin America'],
+    run: 'Run automation',
+    running: 'Running…',
+    again: 'Try again',
+    steps: [
+      { kind: 'Trigger', text: 'A new cohort is requested' },
+      { kind: 'Step 1', text: 'Created on the platform' },
+      { kind: 'Step 2', text: 'Added to the team board' },
+      { kind: 'Step 3', text: 'Slack message to the team' },
+      { kind: 'Step 4', text: 'Kickoff checklist scheduled' },
+    ],
+    done: (program, region) => `${program} cohort in ${region} created. Nobody had to copy or paste anything.`,
+  },
+}
