@@ -877,15 +877,22 @@ function AgentChat({ lang, chat, setChat, onClose, onContact }) {
           </button>
         </form>
       ) : (
-        <p className="agent-limit">{c.limit}</p>
+        <div className="agent-limit">
+          <p>{c.limit}</p>
+          <button type="button" className="cta" onClick={contact}>
+            {c.contact}
+          </button>
+        </div>
       )}
 
       <div className="agent-foot">
         <span>{left > 0 ? c.left(left) : ''}</span>
         <span className="contact">
-          <button type="button" className="step" onClick={contact}>
-            {c.contact}
-          </button>
+          {left > 0 && (
+            <button type="button" className="step" onClick={contact}>
+              {c.contact}
+            </button>
+          )}
           <button type="button" className="step" onClick={() => dialog.current.close()}>
             {c.close}
           </button>

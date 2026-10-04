@@ -133,7 +133,7 @@ export const DRAG_HINT = {
 }
 
 // How many questions one visit can ask the agent
-export const AGENT_QUESTIONS = 5
+export const AGENT_QUESTIONS = 3
 
 export const AGENT = {
   es: {
@@ -147,7 +147,7 @@ export const AGENT = {
     send: 'Preguntar',
     thinking: 'Pensando…',
     left: (n) => (n === 1 ? 'Te queda 1 pregunta' : `Te quedan ${n} preguntas`),
-    limit: 'Hasta aquí llega el agente por hoy. Para seguir la conversación, escríbeme.',
+    limit: 'Hasta aquí llega el agente. Si quieres saber más, escríbeme y te respondo yo.',
     errors: {
       declined: 'No puedo responder a eso. Prueba con otra pregunta sobre Lucía.',
       rate_limited: 'El agente ha recibido muchas preguntas. Inténtalo en unos minutos o escríbeme.',
@@ -169,7 +169,7 @@ export const AGENT = {
     send: 'Ask',
     thinking: 'Thinking…',
     left: (n) => (n === 1 ? '1 question left' : `${n} questions left`),
-    limit: "That's as far as the agent goes today. To keep the conversation going, write to me.",
+    limit: "That's as far as the agent goes. If you'd like to know more, write to me and I'll answer myself.",
     errors: {
       declined: "I can't answer that. Try another question about Lucía.",
       rate_limited: 'The agent has had a lot of questions. Try again in a few minutes or write to me.',

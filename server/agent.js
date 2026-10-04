@@ -8,7 +8,7 @@ const MAX_TURN = 1500
 
 // Best-effort limits. They live in the memory of one server instance, so they
 // reset whenever the platform starts a new one; the hard ceiling is the API balance.
-const PER_VISITOR = { limit: 8, windowMs: 10 * 60 * 1000 }
+const PER_VISITOR = { limit: 6, windowMs: 60 * 60 * 1000 }
 const GLOBAL = { limit: 60, windowMs: 60 * 60 * 1000 }
 const hits = new Map()
 

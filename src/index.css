@@ -1280,6 +1280,13 @@ h2 {
 }
 
 .agent-limit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--teal-soft);
+  border-radius: 18px;
+  padding: 16px 18px;
   font-weight: 700;
   line-height: 1.45;
 }
