@@ -7,6 +7,7 @@ import {
   AVATARS,
   CLOSING,
   CONTACT,
+  DRAG_HINT,
   FORMSPREE_ID,
   HOURS,
   INTRO_AVATAR,
@@ -34,22 +35,51 @@ function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
-function Scene({ hourIndex, started, bubble }) {
+// The sun's path across the sky, as percentages of the scene: one point per hour
+const SUN_PATH = HOURS.map((h) => ({ left: parseFloat(h.sun.left), top: parseFloat(h.sun.top) }))
+const SUN_WIDTH = 18
+
+// Where the sun sits on its arc for a given horizontal position, and which hour that is
+function sunAt(left) {
+  const last = SUN_PATH.length - 1
+  let k = SUN_PATH.findIndex((p) => left <= p.left)
+  if (k === -1) k = last
+  if (k === 0) return { top: SUN_PATH[0].top, index: 0 }
+  const from = SUN_PATH[k - 1]
+  const to = SUN_PATH[k]
+  const t = Math.min(1, (left - from.left) / (to.left - from.left))
+  return { top: from.top + (to.top - from.top) * t, index: t < 0.5 ? k - 1 : k }
+}
+
+function Scene({ hourIndex, started, bubble, onHour }) {
   const root = useRef(null)
+  const dragging = useRef(false)
+  const moonStart = useRef(null)
   const hour = HOURS[started ? hourIndex : 0]
+  // The hour the sun should settle on when a drag ends (handlers can outlive a render)
+  const settleOn = useRef(hour)
+
+  useEffect(() => {
+    settleOn.current = hour
+  }, [hour])
   const avatar = started ? hour.avatar : INTRO_AVATAR
+
+  const settleSun = (sun, target, duration) =>
+    gsap.to(sun, {
+      left: target.sun.left,
+      top: target.sun.top,
+      backgroundColor: target.sun.color,
+      duration,
+      ease: 'power2.inOut',
+    })
 
   useGSAP(
     () => {
       const duration = prefersReducedMotion() ? 0 : 0.9
       gsap.to(root.current, { backgroundColor: hour.sky, duration, ease: 'power2.out' })
-      gsap.to('.sun', {
-        left: hour.sun.left,
-        top: hour.sun.top,
-        backgroundColor: hour.sun.color,
-        duration,
-        ease: 'power2.inOut',
-      })
+      // While the visitor is dragging the sun, it follows the pointer instead
+      if (dragging.current) gsap.to('.sun', { backgroundColor: hour.sun.color, duration })
+      else settleSun('.sun', hour, duration)
       gsap.to('.moon', { top: started && hour.night ? '22%' : '110%', duration, ease: 'power2.inOut' })
       gsap.fromTo('.bubble', { scale: 0.85, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: duration / 2, ease: 'back.out(2)' })
     },
@@ -64,10 +94,69 @@ function Scene({ hourIndex, started, bubble }) {
     { scope: root },
   )
 
+  const startSunDrag = (event) => {
+    if (!started || hour.night) return
+    dragging.current = true
+    event.currentTarget.setPointerCapture(event.pointerId)
+    gsap.killTweensOf(event.currentTarget, 'left,top')
+  }
+
+  const dragSun = (event) => {
+    if (!dragging.current) return
+    // The button was released without a pointerup reaching us: finish the drag
+    if (event.buttons === 0) return endSunDrag(event)
+    const box = root.current.getBoundingClientRect()
+    const pointer = ((event.clientX - box.left) / box.width) * 100
+    const left = Math.max(0, Math.min(92, pointer - SUN_WIDTH / 2))
+    const { top, index } = sunAt(left)
+    gsap.set(event.currentTarget, { left: `${left}%`, top: `${top}%` })
+    settleOn.current = HOURS[index]
+    if (index !== hourIndex) onHour(index)
+  }
+
+  function endSunDrag(event) {
+    if (!dragging.current) return
+    dragging.current = false
+    settleSun(event.currentTarget, settleOn.current, prefersReducedMotion() ? 0 : 0.5)
+  }
+
+  // At night there is no sun to drag: pulling the moon aside starts a new day
+  const startMoonDrag = (event) => {
+    if (!started || !hour.night) return
+    moonStart.current = event.clientX
+    event.currentTarget.setPointerCapture(event.pointerId)
+  }
+
+  const dragMoon = (event) => {
+    if (moonStart.current === null) return
+    if (Math.abs(event.clientX - moonStart.current) > 24) {
+      moonStart.current = null
+      onHour(0)
+    }
+  }
+
+  const endMoonDrag = () => {
+    moonStart.current = null
+  }
+
   return (
-    <div className="scene" ref={root} style={{ backgroundColor: HOURS[0].sky }}>
-      <div className="sun" style={{ left: HOURS[0].sun.left, top: HOURS[0].sun.top, backgroundColor: HOURS[0].sun.color }} />
-      <div className="moon" />
+    <div className={started ? 'scene is-live' : 'scene'} ref={root} style={{ backgroundColor: HOURS[0].sky }}>
+      <div
+        className="sun"
+        style={{ left: HOURS[0].sun.left, top: HOURS[0].sun.top, backgroundColor: HOURS[0].sun.color }}
+        onPointerDown={startSunDrag}
+        onPointerMove={dragSun}
+        onPointerUp={endSunDrag}
+        onPointerCancel={endSunDrag}
+        onLostPointerCapture={endSunDrag}
+      />
+      <div
+        className="moon"
+        onPointerDown={startMoonDrag}
+        onPointerMove={dragMoon}
+        onPointerUp={endMoonDrag}
+        onPointerCancel={endMoonDrag}
+      />
       <div className="hill hill-left" />
       <div className="hill hill-right" />
       <div className="avatars">
@@ -525,7 +614,13 @@ export default function App() {
 
       <main className="main" ref={main}>
         <div className="scene-wrap">
-          <Scene hourIndex={index} started={started} bubble={started ? copy.ch[index].bubble : copy.introBubble} />
+          <Scene
+            hourIndex={index}
+            started={started}
+            bubble={started ? copy.ch[index].bubble : copy.introBubble}
+            onHour={setIndex}
+          />
+          {started && <p className="drag-hint">{DRAG_HINT[lang][HOURS[index].night ? 'moon' : 'sun']}</p>}
         </div>
         {started ? (
           <Day

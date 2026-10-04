@@ -6,7 +6,7 @@ export const HOURS = [
   { time: '14:30', avatar: 'construir', sky: '#FFE39A', sun: { left: '70%', top: '24%', color: '#FFB52E' } },
   { time: '16:00', avatar: 'sync', team: true, sky: '#F7B8A0', sun: { left: '78%', top: '66%', color: '#FF8A4C' } },
   // Night: the sun has set below the frame and the moon rises on the left
-  { time: '18:30', avatar: 'despedida', sky: '#2B2A5C', night: true, sun: { left: '80%', top: '110%', color: '#FF8A4C' } },
+  { time: '18:30', avatar: 'despedida', sky: '#2B2A5C', night: true, sun: { left: '90%', top: '110%', color: '#FF8A4C' } },
 ]
 
 export const INTRO_AVATAR = 'saludo'
@@ -97,4 +97,9 @@ export const CONTACT = {
     error: "It couldn't be sent. Try again or message me on LinkedIn.",
     close: 'Close',
   },
+}
+
+export const DRAG_HINT = {
+  es: { sun: 'Arrastra el sol para cambiar de hora', moon: 'Arrastra la luna para empezar un nuevo día' },
+  en: { sun: 'Drag the sun to change the hour', moon: 'Drag the moon to start a new day' },
 }
