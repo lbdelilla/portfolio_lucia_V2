@@ -30,6 +30,7 @@ What she looks for and how she works
 - She is drawn to roles where she can keep growing and learning: constant learning is a big part of why she enjoys her work.
 - She prefers remote work, and would consider hybrid or on-site depending on how interesting the role is.
 - She is an EU citizen and can work in any country of the European Union.
+- She has a driving licence.
 - Her experience is in technology education (4Geeks Academy) and in healthcare (Casa de Galicia), always from the management side.
 
 How she leads
