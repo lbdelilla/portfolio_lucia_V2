@@ -53,6 +53,37 @@ const CONFETTI = [
   [45, -40, 150, '#ffd166'], [-55, -35, -240, '#bfe8d2'],
 ]
 
+// Speech-bubble text that types itself out. The full text is always in the layout
+// (invisible) so the bubble keeps its size while the letters appear.
+function Typed({ text }) {
+  const [count, setCount] = useState(() => (prefersReducedMotion() ? text.length : 0))
+
+  useEffect(() => {
+    if (count >= text.length) return
+    const id = setTimeout(() => setCount(count + 1), 22)
+    return () => clearTimeout(id)
+  }, [count, text])
+
+  return (
+    <>
+      <span className="bubble-ghost" aria-hidden="true">
+        {text}
+      </span>
+      <span aria-hidden="true">{text.slice(0, count)}</span>
+    </>
+  )
+}
+
+// How far each layer of the scene shifts with the pointer, in px at the edges
+const PARALLAX = [
+  ['.stars', 6],
+  ['.sun', 8],
+  ['.moon', 8],
+  ['.hill-left', -10],
+  ['.hill-right', -16],
+  ['.avatars', 12],
+]
+
 // The sun's path across the sky, as percentages of the scene: one point per hour
 const SUN_PATH = HOURS.filter((h) => !h.afterHours).map((h) => ({
   left: parseFloat(h.sun.left),
@@ -78,6 +109,7 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
   const [fact, setFact] = useState(null)
   const dragging = useRef(false)
   const moonStart = useRef(null)
+  const layers = useRef([])
   const hour = HOURS[started ? hourIndex : 0]
   // The hour the sun should settle on when a drag ends (handlers can outlive a render)
   const settleOn = useRef(hour)
@@ -87,6 +119,7 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
   }, [hour])
   const avatar = started ? hour.avatar : INTRO_AVATAR
   const telling = started && fact && fact.hour === hourIndex
+  const said = telling ? facts[fact.i % facts.length] : bubble
 
   const settleSun = (sun, target, duration) =>
     gsap.to(sun, {
@@ -123,6 +156,10 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
   useGSAP(
     () => {
       if (prefersReducedMotion()) return
+      layers.current = PARALLAX.map(([selector, reach]) => ({
+        reach,
+        move: gsap.quickTo(selector, 'x', { duration: 0.6, ease: 'power3.out' }),
+      }))
       // Page entrance: hills rise, the sun comes up, Lucía pops in; then she keeps gently bobbing
       gsap.from('.hill', { yPercent: 120, duration: 0.9, stagger: 0.12, ease: 'power3.out' })
       gsap.fromTo(
@@ -137,6 +174,26 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
     },
     { scope: root },
   )
+
+  // Parallax: layers drift a little with the mouse to give the scene depth
+  const tilt = (event) => {
+    if (event.pointerType !== 'mouse') return
+    const box = root.current.getBoundingClientRect()
+    const offset = (event.clientX - box.left) / box.width - 0.5
+    layers.current.forEach((layer) => layer.move(offset * 2 * layer.reach))
+  }
+
+  const level = () => layers.current.forEach((layer) => layer.move(0))
+
+  const tellFact = () => {
+    setFact({ hour: hourIndex, i: fact ? fact.i + 1 : 0 })
+    if (prefersReducedMotion()) return
+    gsap.fromTo(
+      root.current.querySelector('.avatars'),
+      { y: 0 },
+      { y: -16, duration: 0.14, ease: 'power1.out', yoyo: true, repeat: 1, overwrite: 'auto' },
+    )
+  }
 
   const startSunDrag = (event) => {
     if (!started || hour.night) return
@@ -193,6 +250,8 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
         .join(' ')}
       ref={root}
       style={{ backgroundColor: HOURS[0].sky }}
+      onPointerMove={tilt}
+      onPointerLeave={level}
     >
       <div className="glow" />
       <div className="stars" aria-hidden="true">
@@ -238,12 +297,12 @@ function Scene({ hourIndex, started, bubble, facts, tapLabel, onHour }) {
           type="button"
           className="avatar-hit"
           aria-label={tapLabel}
-          onClick={() => setFact({ hour: hourIndex, i: fact ? fact.i + 1 : 0 })}
+          onClick={tellFact}
         />
       )}
       <div className="clock">{hour.time}</div>
-      <div className="bubble" aria-live="polite">
-        {telling ? facts[fact.i % facts.length] : bubble}
+      <div className="bubble" role="status" aria-label={said}>
+        <Typed key={said} text={said} />
       </div>
     </div>
   )

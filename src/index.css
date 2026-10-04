@@ -367,6 +367,16 @@ button {
   line-height: 1.35;
   font-weight: 500;
   transform-origin: bottom left;
+  display: grid;
+}
+
+/* Typed text and its invisible full-length twin share one cell */
+.bubble > span {
+  grid-area: 1 / 1;
+}
+
+.bubble-ghost {
+  visibility: hidden;
 }
 
 /* Text */
@@ -966,6 +976,34 @@ h2 {
   background: var(--teal);
 }
 
+/* While a step runs, the line to the next one fills up like data travelling */
+.flow-step.is-active:not(:last-child)::before {
+  background:
+    linear-gradient(var(--coral), var(--coral)) no-repeat,
+    var(--line);
+  animation: flow-down 0.7s linear forwards;
+}
+
+@keyframes flow-down {
+  from {
+    background-size: 100% 0%;
+  }
+
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes flow-across {
+  from {
+    background-size: 0% 100%;
+  }
+
+  to {
+    background-size: 100% 100%;
+  }
+}
+
 .flow-done {
   background: #d3f0e0;
   border-radius: 14px;
@@ -1238,6 +1276,10 @@ button.cta {
     bottom: auto;
     width: auto;
     height: 2px;
+  }
+
+  .flow-step.is-active:not(:last-child)::before {
+    animation-name: flow-across;
   }
 }
 
