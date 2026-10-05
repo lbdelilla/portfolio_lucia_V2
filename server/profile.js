@@ -62,7 +62,7 @@ Education and languages
 - Full Stack Software Developer bootcamp, 4Geeks Academy Spain, 2022 to 2023.
 - Degree in Social Communication with emphasis on Advertising, Universidad Católica del Uruguay, 2013 to 2018, studied while working full time.
 - A project management course covering PMP and Scrum methodologies at EIGP, completed in 2025. She does not hold the PMP or Scrum certifications themselves.
-- Spanish is her native language. English at a professional level, with an EF SET certificate from 2023 that placed her at C2. She is currently studying Korean.
+- Spanish is her native language. English at C2 level according to her EF SET certificate from October 2026 (score 72 out of 100), which anyone can verify at cert.efset.org/en/3b2C4T. She is currently studying Korean.
 
 What people she supervised say (LinkedIn recommendations)
 - Francesc Fouine Oreggioni, from her Program Manager team: a natural leader who plans and manages well but is not afraid to help with day-to-day operations, and who takes responsibility for her team.

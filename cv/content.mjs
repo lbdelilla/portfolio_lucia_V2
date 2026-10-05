@@ -16,7 +16,7 @@ export const CV = {
       languages: 'Idiomas',
     },
     summary:
-      'Program Manager Lead con más de cinco años liderando equipos y coordinando operaciones en educación tecnológica y salud. Coordino programas de formación en España y Latinoamérica y construyo yo misma las automatizaciones y herramientas que el equipo necesita: combino gestión, procesos y perfil técnico como desarrolladora Full Stack. Inglés C1.',
+      'Program Manager Lead con más de cinco años liderando equipos y coordinando operaciones en educación tecnológica y salud. Coordino programas de formación en España y Latinoamérica y construyo yo misma las automatizaciones y herramientas que el equipo necesita: combino gestión, procesos y perfil técnico como desarrolladora Full Stack. Inglés C2.',
     jobs: [
       {
         title: 'Program Manager Lead · España y Latinoamérica',
@@ -63,7 +63,7 @@ export const CV = {
       { title: 'Full Stack Software Developer', meta: '4Geeks Academy España · 2022 - 2023' },
       { title: 'Licenciatura en Comunicación Social, énfasis en Publicidad', meta: 'Universidad Católica del Uruguay · 2013 - 2018' },
     ],
-    languages: ['Español: nativo', 'Inglés: nivel profesional (certificado EF SET, 2023)'],
+    languages: ['Español: nativo', 'Inglés: C2 (certificado EF SET, 2026 · cert.efset.org/en/3b2C4T)'],
     projects: [
       {
         title: 'luciabelen.dev',
@@ -87,7 +87,7 @@ export const CV = {
       languages: 'Languages',
     },
     summary:
-      'Program Manager Lead with more than five years leading teams and coordinating operations in technology education and healthcare. I coordinate training programmes across Spain and Latin America and build the automations and tools my team needs myself, combining management, process and a technical profile as a Full Stack developer. English C1.',
+      'Program Manager Lead with more than five years leading teams and coordinating operations in technology education and healthcare. I coordinate training programmes across Spain and Latin America and build the automations and tools my team needs myself, combining management, process and a technical profile as a Full Stack developer. English C2.',
     jobs: [
       {
         title: 'Program Manager Lead · Spain and Latin America',
@@ -134,7 +134,7 @@ export const CV = {
       { title: 'Full Stack Software Developer', meta: '4Geeks Academy Spain · 2022 - 2023' },
       { title: "Bachelor's Degree in Social Communication, major in Advertising", meta: 'Universidad Católica del Uruguay · 2013 - 2018' },
     ],
-    languages: ['Spanish: native', 'English: professional level (EF SET certificate, 2023)'],
+    languages: ['Spanish: native', 'English: C2 (EF SET certificate, 2026 · cert.efset.org/en/3b2C4T)'],
     projects: [
       {
         title: 'luciabelen.dev',
