@@ -25,3 +25,8 @@ dist-ssr
 
 # Local Claude Code settings
 .claude
+
+# Private CV data and builds (phone, email)
+cv/private.json
+cv/out
+cv/backup
