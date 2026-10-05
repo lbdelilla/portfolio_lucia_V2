@@ -39,8 +39,8 @@ export const SUMMARY = {
     role: 'Program Manager Lead · 4Geeks Academy · Valencia, España',
     points: [
       'Coordino a los Program Managers, los cursos, los profesores y la experiencia de los alumnos en España y Latinoamérica.',
-      'Equipo de hasta 5 personas; hasta 500 estudiantes activos en paralelo en múltiples programas.',
-      'Automatizaciones de punta a punta: creación de cohortes, cambios de estado, seguimiento de estudiantes e incidencias.',
+      'Equipo de hasta 5 personas; hasta 500 estudiantes activos en paralelo y más de 4.600 mentorías coordinadas en un año.',
+      'Automatizaciones de punta a punta: creación de cohortes, cambios de estado, seguimiento de estudiantes e incidencias. Una de ellas redujo en torno a un 70 % el tiempo hasta la emisión del certificado.',
       'También soy desarrolladora: trabajé en el desarrollo de una plataforma interna para mentores.',
       'Antes: Head of Communication & Marketing en Casa de Galicia, con un equipo de más de 20 personas.',
       'Formación: Comunicación Social (UCU), Full Stack (4Geeks), curso de gestión de proyectos (EIGP). Inglés C2 (certificado EF SET, 2026).',
@@ -54,8 +54,8 @@ export const SUMMARY = {
     role: 'Program Manager Lead · 4Geeks Academy · Valencia, Spain',
     points: [
       'I coordinate the Program Managers, the courses, the teachers and the student experience in Spain and Latin America.',
-      'A team of up to 5; up to 500 active students in parallel across multiple programs.',
-      'End-to-end automations: cohort creation, status changes, student follow-up and incidents.',
+      'A team of up to 5; up to 500 active students in parallel and more than 4,600 mentoring sessions coordinated in a year.',
+      'End-to-end automations: cohort creation, status changes, student follow-up and incidents. One of them cut the time to issue a certificate by around 70%.',
       'I am also a developer: I worked on building an internal platform for mentors.',
       'Before: Head of Communication & Marketing at Casa de Galicia, leading a team of 20+ people.',
       'Education: Social Communication (UCU), Full Stack (4Geeks), project management course (EIGP). English C2 (EF SET certificate, 2026).',

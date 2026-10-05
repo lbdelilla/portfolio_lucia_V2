@@ -24,7 +24,10 @@ Current role
 - She reports to the Academic Director. She manages the expenses for mentors, courses and mentoring sessions, though not a budget of her own.
 - She coordinates a team of up to 5 people (Program Managers and Prework Advisors). Her team has overseen up to 500 active students in parallel across multiple programs.
 - She led the operational unification between Spain and Latin America, so both regions work with the same processes and workflows.
-- A structured student follow-up model she worked on raised student ratings and the graduation rate. No specific figures are available.
+- Certificates: students used to take a long time to hand in pending projects and get their certificate. Her team refined the process and automated notifications (when a student in a finished cohort submits a project) and reminders to students, which cut the average time to issue a certificate by around 70 percent. She sees this as a shared result, since students still have to deliver their projects.
+- Mentoring: she coordinates the availability and assignment of mentors and mentoring sessions, including group sessions. More than 4,600 sessions were coordinated in one year, with around 95 percent of the sessions offered taking place.
+- Teachers: her team follows up with teachers, reviews recorded classes, and gives teachers feedback based on what students say, always keeping students anonymous. Teachers and teaching assistants have been rated above 9 out of 10 by students for two years.
+- Do not give any other figures about student ratings, graduation, dropouts, enrolment or costs: you do not have them.
 - Team rhythm: a sync with her team on Mondays at 16:00, and a meeting of all Program Managers from Spain, Latin America and the United States on Fridays.
 
 What she looks for and how she works
