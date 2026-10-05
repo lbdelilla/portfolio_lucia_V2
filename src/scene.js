@@ -43,9 +43,9 @@ export const SUMMARY = {
       'Automatizaciones de punta a punta: creación de cohortes, cambios de estado, seguimiento de estudiantes e incidencias.',
       'También soy desarrolladora: trabajé en el desarrollo de una plataforma interna para mentores.',
       'Antes: Head of Communication & Marketing en Casa de Galicia, con un equipo de más de 20 personas.',
-      'Formación: Comunicación Social (UCU), Full Stack (4Geeks), preparación PMP y SMPC (EIGP). Inglés C1.',
+      'Formación: Comunicación Social (UCU), Full Stack (4Geeks), curso de gestión de proyectos (EIGP). Inglés con certificado EF SET.',
     ],
-    tools: 'n8n · Make · Zapier · GitHub Actions · Notion · Asana · Trello · agentes de IA',
+    tools: 'n8n · Make · Zapier · GitHub Actions · Looker Studio · Notion · Asana · Trello · agentes de IA',
   },
   en: {
     open: 'Quick summary',
@@ -58,9 +58,9 @@ export const SUMMARY = {
       'End-to-end automations: cohort creation, status changes, student follow-up and incidents.',
       'I am also a developer: I worked on building an internal platform for mentors.',
       'Before: Head of Communication & Marketing at Casa de Galicia, leading a team of 20+ people.',
-      'Education: Social Communication (UCU), Full Stack (4Geeks), PMP and SMPC preparation (EIGP). C1 English.',
+      'Education: Social Communication (UCU), Full Stack (4Geeks), project management course (EIGP). English with an EF SET certificate.',
     ],
-    tools: 'n8n · Make · Zapier · GitHub Actions · Notion · Asana · Trello · AI agents',
+    tools: 'n8n · Make · Zapier · GitHub Actions · Looker Studio · Notion · Asana · Trello · AI agents',
   },
 }
 

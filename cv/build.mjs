@@ -47,10 +47,10 @@ function page(cv, contact) {
   html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body {
     margin: 0;
-    padding: 12mm 15mm 9mm;
+    padding: 11mm 14mm 8mm;
     font-family: Figtree, Verdana, sans-serif;
-    font-size: 9.7pt;
-    line-height: 1.44;
+    font-size: 9.3pt;
+    line-height: 1.38;
     color: #221c3a;
   }
   h1, h2, h3, p, ul { margin: 0; }
@@ -65,7 +65,7 @@ function page(cv, contact) {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: #1f6f63;
-    margin: 11pt 0 4pt;
+    margin: 9pt 0 4pt;
   }
   .job { margin-bottom: 6pt; break-inside: avoid; }
   h3 { font-size: 10.2pt; font-weight: 700; }
@@ -107,6 +107,10 @@ function page(cv, contact) {
     <section>
       <h2>${escape(cv.headings.tools)}</h2>
       <p>${cv.tools.map(escape).join(' · ')}</p>
+    </section>
+    <section>
+      <h2>${escape(cv.headings.projects)}</h2>
+      ${cv.projects.map((e) => `<p class="entry"><strong>${escape(e.title)}</strong><span>${escape(e.meta)}</span></p>`).join('')}
     </section>
   </div>
   <div>
