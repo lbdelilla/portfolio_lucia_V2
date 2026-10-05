@@ -37,7 +37,7 @@ export const CV = {
         meta: 'Casa de Galicia · 2020 - 2022 · Montevideo, Uruguay · Reportaba a la Dirección Técnica',
         bullets: [
           'Lideré un equipo multidisciplinar de más de 20 personas en Atención al Cliente, Comercial y Comunicación.',
-          'Fui el enlace entre departamentos, equipo técnico y dirección en la migración del CRM y la actualización del sistema de gestión médica.',
+          'Fui el enlace entre departamentos, equipo técnico y dirección en la migración del CRM a un sistema desarrollado a medida y en la actualización del sistema de gestión médica.',
           'Coordiné la presencia en más de 12 eventos y ferias al año sin presupuesto asignado, consiguiendo recursos mediante acuerdos y colaboraciones.',
           'Aumenté más de un 80 % los seguidores y la interacción en redes sociales y un 20 % la tasa de conversión de la web.',
           'Creé e implanté el manual de imagen corporativa de la organización.',
@@ -108,7 +108,7 @@ export const CV = {
         meta: 'Casa de Galicia · 2020 - 2022 · Montevideo, Uruguay · Reported to Technical Management',
         bullets: [
           'Led a multidisciplinary team of more than 20 people across Customer Service, Sales and Communication.',
-          'Acted as the link between departments, the technical team and management for the CRM migration and the upgrade of the medical management system.',
+          'Acted as the link between departments, the technical team and management for the CRM migration to a custom-built system and the upgrade of the medical management system.',
           "Coordinated the organisation's presence at more than 12 events and fairs a year with no assigned budget, securing resources through agreements and partnerships.",
           'Grew social media followers and engagement by more than 80% and the website conversion rate by 20%.',
           "Created and rolled out the organisation's corporate identity manual.",

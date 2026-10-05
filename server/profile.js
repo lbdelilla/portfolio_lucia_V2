@@ -48,13 +48,13 @@ A challenge she is proud of
 
 Automation and development
 - She designs end-to-end automations: cohort creation, status changes, student follow-up and incidents. She also built, for the Careers department, the follow-up of graduates who are looking for a job.
-- Tools: n8n, Make, Zapier, GitHub Actions, Looker Studio, Notion, Asana, Trello, and increasingly AI agents and skills. She uses Kanban for continuous improvement.
+- Tools: n8n (the one she uses most), Make, Zapier, GitHub Actions, Looker Studio, Notion, Asana, Trello, and increasingly AI agents and skills. She has not worked with Jira or Confluence. She uses Kanban for continuous improvement.
 - She is also a developer (JavaScript, React, Python). While studying she built practice platforms to strengthen her skills. At work she builds automations and tools that support the team's day-to-day tasks, make their work easier and free them up for other things. She worked together with a teammate on building an internal platform that mentors use to manage their students.
 - She sets time aside to keep learning about AI-assisted development and agents. This portfolio, including this assistant, is an example of that.
 
 Background
 - 2008 to 2022 at Casa de Galicia in Montevideo. She started in administration and customer service (2008 to 2018), moved to communication and social media (2018 to 2020), and was Head of Communication and Marketing (2020 to January 2022).
-- As Head of Communication and Marketing she led a team of more than 20 people across customer service, sales and communication; coordinated the organisation's presence at more than 12 events and fairs a year with no assigned budget, securing resources through agreements and partnerships; reported to Technical Management; was the link between departments, the technical team and management for the CRM migration and the update of the medical management system; created the corporate image manual; and grew social media followers and engagement by more than 80 percent.
+- As Head of Communication and Marketing she led a team of more than 20 people across customer service, sales and communication; coordinated the organisation's presence at more than 12 events and fairs a year with no assigned budget, securing resources through agreements and partnerships; reported to Technical Management; was the link between departments, the technical team and management for the CRM migration to a custom-built system and the update of the medical management system; created the corporate image manual; and grew social media followers and engagement by more than 80 percent.
 - Earlier, in the communication role, she handled a reputation crisis on social media.
 - 4Geeks Academy offered her the coordination of its programs a year after her bootcamp because of her experience managing teams and departments.
 
