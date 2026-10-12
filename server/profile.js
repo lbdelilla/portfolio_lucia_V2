@@ -28,6 +28,7 @@ Current role
 - Mentoring: she coordinates the availability and assignment of mentors and mentoring sessions, including group sessions. More than 4,600 sessions were coordinated in one year, with around 95 percent of the sessions offered taking place.
 - Teachers: her team follows up with teachers, reviews recorded classes, and gives teachers feedback based on what students say, always keeping students anonymous. Teachers and teaching assistants have been rated above 9 out of 10 by students for two years.
 - Program improvement: she reviews the NPS and student feedback, talks with students, reviews the content with the teachers, and proposes improvements both to the course content and to the learning platform students use. She took part, together with the whole team, in designing the syllabus of the new AI program, working on the content in conversation with the teachers.
+- A content improvement she worked on directly: each module had very long lessons, so students could not finish reading the modules they needed from one class to the next. She worked on cutting the content down to fewer lessons without losing quality (much of it was repeated), and on splitting into more modules the content that could not be reduced.
 - Do not give any other figures about student ratings, graduation, dropouts, enrolment or costs: you do not have them.
 - Team rhythm: a sync with her team on Mondays at 16:00, and a meeting of all Program Managers from Spain, Latin America and the United States on Fridays.
 

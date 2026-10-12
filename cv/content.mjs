@@ -29,7 +29,7 @@ export const CV = {
           'Afiné el proceso y automaticé avisos y recordatorios que redujeron en torno a un 70 % el tiempo medio hasta la emisión del certificado.',
           'Coordino la disponibilidad y asignación de mentores y mentorías (más de 4.600 en un año, con cerca del 95 % de las ofrecidas realizadas) y gestiono sus gastos.',
           'Codesarrollé una plataforma interna con la que los mentores gestionan a sus alumnos.',
-          'A partir del NPS, la revisión de clases y conversaciones con alumnos, doy feedback a los profesores y propongo con ellos mejoras de contenido y de plataforma (profesores valorados por encima de 9/10 durante dos años). Participé en el diseño del syllabus del nuevo programa de IA.',
+          'A partir del NPS, la revisión de clases y conversaciones con alumnos, doy feedback a los profesores y propongo con ellos mejoras de contenido y de plataforma (profesores valorados por encima de 9/10 durante dos años). Participé en el diseño del syllabus del nuevo programa de IA y reorganicé módulos para que el contenido fuera abarcable entre clases.',
         ],
       },
       {
@@ -100,7 +100,7 @@ export const CV = {
           'Refined the process and automated notifications and reminders that cut the average time to issue a certificate by around 70%.',
           'Coordinate the availability and assignment of mentors and mentoring sessions (more than 4,600 in a year, with around 95% of those offered taking place) and manage their expenses.',
           'Co-developed an internal platform that mentors use to manage their students.',
-          'Using NPS, class reviews and conversations with students, give teachers feedback and propose content and platform improvements with them (teachers rated above 9/10 for two years). Took part in designing the syllabus of the new AI programme.',
+          'Using NPS, class reviews and conversations with students, give teachers feedback and propose content and platform improvements with them (teachers rated above 9/10 for two years). Took part in designing the syllabus of the new AI programme and restructured modules so the content could be covered between classes.',
         ],
       },
       {
