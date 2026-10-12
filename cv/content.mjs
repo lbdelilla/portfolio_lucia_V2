@@ -23,13 +23,13 @@ export const CV = {
         meta: '4Geeks Academy · 2023 - Actualidad · Remoto · Reporto al Director Académico',
         bullets: [
           'Lidero al equipo de Program Managers y Prework Advisors (hasta 5 personas) y coordino cursos, profesores y la experiencia de los alumnos en dos regiones.',
-          'Hemos supervisado hasta 500 estudiantes activos en paralelo en programas de Full Stack, Data Science y AI Engineering.',
+          'Hemos supervisado hasta 500 estudiantes activos en paralelo en programas de Full Stack, Data Science y Ciberseguridad, y ahora el nuevo programa de AI Engineering.',
           'Lideré la unificación operativa entre España y Latinoamérica: procesos y flujos comunes para dos sedes que trabajaban con criterios distintos.',
           'Diseñé e implementé automatizaciones de punta a punta para la creación de cohortes, los cambios de estado, el seguimiento de estudiantes y las incidencias, y para el departamento de Carreras, con n8n, Make, Zapier y GitHub Actions.',
           'Afiné el proceso y automaticé avisos y recordatorios que redujeron en torno a un 70 % el tiempo medio hasta la emisión del certificado.',
           'Coordino la disponibilidad y asignación de mentores y mentorías (más de 4.600 en un año, con cerca del 95 % de las ofrecidas realizadas) y gestiono sus gastos.',
           'Codesarrollé una plataforma interna con la que los mentores gestionan a sus alumnos.',
-          'A partir del NPS, la revisión de clases y conversaciones con alumnos, doy feedback a los profesores y propongo con ellos mejoras de contenido y de plataforma (profesores valorados por encima de 9/10 durante dos años). Participé en el diseño del syllabus del nuevo programa de IA y reorganicé módulos para que el contenido fuera abarcable entre clases.',
+          'A partir del NPS, la revisión de clases y conversaciones con alumnos, doy feedback a los profesores y propongo con ellos mejoras de contenido y de plataforma (profesores valorados por encima de 9/10 durante dos años). Participé en el diseño del syllabus del nuevo programa de AI Engineering y reorganicé módulos para que el contenido fuera abarcable entre clases.',
         ],
       },
       {
@@ -94,13 +94,13 @@ export const CV = {
         meta: '4Geeks Academy · 2023 - Present · Remote · Reporting to the Academic Director',
         bullets: [
           'Lead the team of Program Managers and Prework Advisors (up to 5 people) and coordinate courses, teachers and the student experience across two regions.',
-          'Our team has overseen up to 500 active students in parallel across Full Stack, Data Science and AI Engineering programmes.',
+          'Our team has overseen up to 500 active students in parallel across Full Stack, Data Science and Cybersecurity programmes, and now the new AI Engineering programme.',
           'Led the operational unification of Spain and Latin America: shared processes and workflows for two sites that worked with different criteria.',
           'Designed and implemented end-to-end automations for cohort creation, status changes, student follow-up and incidents, and for the Careers department, using n8n, Make, Zapier and GitHub Actions.',
           'Refined the process and automated notifications and reminders that cut the average time to issue a certificate by around 70%.',
           'Coordinate the availability and assignment of mentors and mentoring sessions (more than 4,600 in a year, with around 95% of those offered taking place) and manage their expenses.',
           'Co-developed an internal platform that mentors use to manage their students.',
-          'Using NPS, class reviews and conversations with students, give teachers feedback and propose content and platform improvements with them (teachers rated above 9/10 for two years). Took part in designing the syllabus of the new AI programme and restructured modules so the content could be covered between classes.',
+          'Using NPS, class reviews and conversations with students, give teachers feedback and propose content and platform improvements with them (teachers rated above 9/10 for two years). Took part in designing the syllabus of the new AI Engineering programme and restructured modules so the content could be covered between classes.',
         ],
       },
       {
